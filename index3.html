@@ -205,6 +205,13 @@ var circles = svg.append("svg:g")
                     if (window.text != null){
                     window.text.exit().remove()
                     }
+                    svg.append("g")
+                        .attr("class", "bubble")
+                      .selectAll("circle")
+                        //.data(topojson.feature(worlds, world.objects.counties).features)
+                      //.enter().append("circle")
+                        //.attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+                        .attr("r", 1.5);
                     window.text=countries2.append('svg:text')
                         .attr('class', function(d){ return 'subunit-label la'+d.id+d.properties.name.replace(/[ \.#']+/g,''); })
                         //.attr('transform', function(d) { return 'translate('+ path.centroid(d) +')'; })
