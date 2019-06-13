@@ -109,22 +109,20 @@ var circles = svg.append("svg:g")
                 .attr("class", "graticule")
                 .attr("d", path);
 
-            //d3.json('data/nations.json', function(error, mockdata) {
-            d3.csv("data/factbook2.csv", function(error,mockdata){
-                //console.log(data);
-
+            d3.json('data/nations.json', function(error, mockdata) {
                 if (error) return console.error(error);
                 window.mockdataglob=mockdata
                 console.log('mockdata',mockdata);
                 dictG={}
                 for (k in mockdata){
-                    dictCount={}
-                    dictCount["income"]=mockdata[k]["GDP - per capita"]
+                dictCount={}
+                for (yearIncome in mockdata[k]["income"]){
+                    dictCount[mockdata[k]["income"][yearIncome][0]]=mockdata[k]["income"][yearIncome][1]
 
-
-                    dictGlobal[ mockdata[k]["Country"] ] =dictCount
                     }
-                 localStorage.setItem("dict",dictGlobal)
+                    dictGlobal[mockdata[k]["name"]]=dictCount
+                    }
+                 localStorage.setItem("dict",dictG)
                  console.log("s",dictG)
                 mapdata = mockdata;
                 draw(mockdata)
@@ -152,7 +150,15 @@ var circles = svg.append("svg:g")
             function selectIncome(d){
                     income=null;
                     //console.log(localStorage.getItem("year"))
-                  return d.properties.income;
+                  for (inc in d.properties.income) {
+                        if (d.properties.income[inc][0]==localStorage.getItem("year")){
+                            income=d.properties.income[inc][1]
+                        }
+                        }
+
+                       //console.log(income)
+
+                        return income;
 
 
             }
@@ -160,16 +166,21 @@ var circles = svg.append("svg:g")
                     ids={}
                     for (var ke  in world.objects.subunits.geometries)
                       ids[world.objects.subunits.geometries[ke]["properties"]["name"]]=ke
-                    console.log("xq",ids)
+                    //console.log("xq",data)
                     for (var ke2  in data){
-                      console.log(data[ke2])
-                      if (ke2 in data && data[ke2]["Country"] && ids[data[ke2]["Country"]]!= undefined && data[ke2]["GDP - per capita"]){
-                          console.log("2")
-                          //income=null
-                          income=data[ke2]["GDP - per capita"]
-                        //console.log("ke2",data[ke2]["GDP - per capita"])
-                        world.objects.subunits.geometries[ids[data[ke2]["Country"] ]].properties.income=income
-                        //console.log(world.objects.subunits.geometries[ids[data[ke2]["Country"]]])
+                      //console.log("1")
+                      if (ke2 in data && ids[data[ke2]["name"]]!= undefined && data[ke2]["income"][39]){
+                          //console.log("2")
+                          income=null
+                          for (inc in data[ke2]["income"]) {
+                            if (data[ke2]["income"][inc][0]=localStorage.getItem("year")){
+                                income=data[ke2]["income"][inc][1]
+                            }
+                            //onsole.log(inc);
+                          }
+                        //console.log("ke2",data[ke2]["income"])
+                        world.objects.subunits.geometries[ids[data[ke2]["name"] ]].properties.income=data[ke2]["income"]
+                        //console.log(world.objects.subunits.geometries[ids[data[ke2]["name"]]])
                         }
                       }
                     //console.log("xq2",world.objects.subunits.geometries)
