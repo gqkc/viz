@@ -1,47 +1,3 @@
-
-<html>
-    <head>
-        <meta charset="utf-8">
-        <style>
-            /* CSS goes here. */
-            .subunit {
-                fill: none;
-                stroke: #FFF;
-                stroke-width: 1px;
-            }
-            text.subunit-label {
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                font-size: 14px;
-                font-weight: 300;
-                text-anchor: middle;
-                fill: #000;
-            }
-            .subunit-label {
-                display: none;
-            }
-            .graticule {
-                fill: none;
-                stroke: #aaa;
-                stroke-opacity: .5;
-                stroke-width: .5px;
-            }
-        </style>
-        <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
-  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
-
-    </head>
-    <body>
-    <input value=1 id="inp"/>
-        <div id="slider" style="width: 200px;"></div>
-<p>
-<label for="year">Year :</label>
-<input type="text" id="year" style="border:0; color:#f6931f; font-weight:bold; " />
-</p>
-
-        <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-        <script src="//d3js.org/topojson.v1.min.js"></script>
-        <script>
 var subunits=null;
 var countries=null;
 var grats=null;
@@ -280,6 +236,3 @@ var circles = svg.append("svg:g")
                         }
 
             });
-        </script>
-
-    </body>

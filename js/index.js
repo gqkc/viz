@@ -1,44 +1,11 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <style>
-            /* CSS goes here. */
-            .subunit {
-                fill: none;
-                stroke: #FFF;
-                stroke-width: 1px;
-            }
-            text.subunit-label {
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                font-size: 14px;
-                font-weight: 300;
-                text-anchor: middle;
-                fill: #000;
-            }
-            .subunit-label {
-                display: none;
-            }
-            .graticule {
-                fill: none;
-                stroke: #aaa;
-                stroke-opacity: .5;
-                stroke-width: .5px;
-            }
-        </style>
-    </head>
-    <body>
-        <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-        <script src="//d3js.org/topojson.v1.min.js"></script>
-        <script>
-            /* JavaScript goes here. */
+          /* JavaScript goes here. */
             // globals used in graph
             var mapdata = {};
             var palette = ['#009933','#669900','#99cc00','#cccc00','#c7dc09','#edf933','#ffcc00', '#ff9933', '#ff6600','#ff5050'];
             var width = 960, height = 960;
             var minDocCount = 0, quantiles = {};
             // projection definitions
-            var projection = d3.geo.function draw() {mercator()
+            var projection = d3.geo.mercator()
                 .scale((width + 1) / 2 / Math.PI)
                 .translate([width/2, height/2])
                 .precision(.1);
@@ -174,7 +141,3 @@
                 else approxIdx = Math.floor(approxIdx) - 1;
                 return palette[approxIdx];
             }
-        </script>
-
-    </body>
-</html>
