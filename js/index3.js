@@ -128,22 +128,17 @@ var circles = svg.append("svg:g")
                         //console.log(world.objects.subunits.geometries[ids[data[ke2]["Country"]]])
                         }
                       }
-                    //console.log("xq2",world.objects.subunits.geometries)
-                    //for
-                    //for geom in world.objects.subunits.geometries:
-
-                    //console.log(world.objects.subunits.geometries[0])
-                    //global subunits;
                     window.subunits = topojson.feature(world, world.objects.subunits);
                     subunits.features = subunits.features.filter(function(d){ return d.id !== "ATA"; });
-                    //console.log('subunits',subunits);
-                    //minDocCount = d3.min(subunits.features, selectIncome);
-                    //console.log('minDocCount',minDocCount);
                     var incomes = subunits.features.map(selectIncome);
                     incomes = incomes.filter(function(d){ return d; }).sort(d3.ascending);
                     //console.log('doc_counts',doc_counts);
                     quantiles['0.95'] = d3.quantile(incomes, '0.95');
 
+                    var colors = d3.scale.quantile()
+                        .domain([100,20000])
+                        .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+                        "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
 
                     window.countries = svg.selectAll('path.subunit')
                         .data(subunits.features)
@@ -152,7 +147,7 @@ var circles = svg.append("svg:g")
 
                     window.grats=countries2.insert('path', '.graticule')
                         .attr('class', function(d) { return 'subunit ca'+d.id; })
-                        .style('fill', heatColor)
+                        .style("fill", d=>colors(d.properties.income))
                         .attr('d', path)
                         .on('mouseover',mouseoverLegend).on('mouseout',mouseoutLegend)
                        .on('click', coutryclicked)
@@ -206,7 +201,6 @@ var circles = svg.append("svg:g")
                 console.log('coutryclicked datum', datum);
             }
             function heatColor(d) {
-                year=localStorage.getItem("year")
                 //console.log(d)
                 if (quantiles['0.95'] === 0 && minDocCount === 0) return '#F0F0F0';
                 if (!d.properties.income) return '#F0F0F0';
@@ -219,6 +213,7 @@ var circles = svg.append("svg:g")
                 var approxIdx = diffDatumDiffDoc / paletteInterval;
                 if (!approxIdx || Math.floor(approxIdx) === 0) approxIdx = 0;
                 else approxIdx = Math.floor(approxIdx) - 1;
+                console.log(palette[approxIdx])
                 return palette[approxIdx];
             }
 
