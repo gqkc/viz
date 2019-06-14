@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+<!-- Create an element where the map will take place -->
+<svg id="my_dataviz" width="800" height="600"></svg>
+
+<script>
+// The svg
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+// Map and projection
+var projection = d3.geoMercator()
+    .scale(85)
+    .translate([width/2, height/2*1.3])
+
+// A path generator
+var path = d3.geoPath()
+    .projection(projection)
+
+// Load world shape AND list of connection
+d3.queue()
+  .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")  // World shape
+  .defer(d3.csv, "data/countries.csv") // Position of circles
+  .await(ready);
+
+colorScale = d3.scaleSequential(d3.interpolatePlasma)
+    .domain([0, 300]);
+
+function ready(error, dataGeo, data) {
+
+    // Reformat the list of link. Note that columns in csv file are called long1, long2, lat1, lat2
+    // var link = []
+    // data.forEach(function(row){
+    //   source = [+row.long1, row.lat1]
+    //   target = [+row.long2, row.lat2]
+    //   topush = {type: "LineString", coordinates: [source, target]}
+    //   link.push(topush)
+    // })
+
+    // Draw the map
+    svg.append("g")
+        .selectAll("path")
+        .data(dataGeo.features).attr("fill", function(d) { return colorScale(d.GDP); })
+            .attr("d", d3.geoPath()
+                .projection(projection)
+            )
+            .style("stroke", "#fff")
+            .style("stroke-width", 0)}
+
+</script>

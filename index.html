@@ -38,7 +38,7 @@
             var width = 960, height = 960;
             var minDocCount = 0, quantiles = {};
             // projection definitions
-            var projection = d3.geo.mercator()
+            var projection = d3.geo.function draw() {mercator()
                 .scale((width + 1) / 2 / Math.PI)
                 .translate([width/2, height/2])
                 .precision(.1);
