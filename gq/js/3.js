@@ -3,15 +3,13 @@ var margin = {top: 20, right: 20, bottom: 50, left: 70},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
- var svg = d3.select("body").append("svg")
+ var svg = d3.select("#divforbubble").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-
-var margin = {top: 20, right: 20, bottom: 50, left: 70}
 
 // Add X axis
 var x = d3.scaleLinear()
@@ -51,6 +49,16 @@ var z = d3.scaleLinear()
     .domain([0, 1])
     .range([ 2,3]);
 
+var Tooltip = d3.select("#divforbubble")
+.append("div")
+.style("opacity", 0)
+.attr("class", "tooltip")
+.style("background-color", "white")
+.style("border", "solid")
+.style("border-width", "2px")
+.style("border-radius", "5px")
+.style("padding", "5px")
+.style("position","absolute")
 
 
 var colorScale = d3.scaleSequential()
@@ -89,6 +97,34 @@ d3.queue()
         return d
     })
     .await(ready);
+
+
+
+function mouseoverLegend(datum, index) {
+
+    Tooltip
+      .style("opacity", 1)
+      }
+
+
+function mousemoveLegend(datum, index) {
+
+//console.log(data_hiv.get(datum["name"]))
+    Tooltip
+      .html("Country: " + datum["name"]+
+      "<br> Hiv: "+data_hiv.get(datum["name"])+
+      "<br> Gdp: "+data_gdp.get(datum["name"])+
+      "<br> Life expectancy: "+data_exp.get(datum["name"])
+
+      )
+      .style("left", (d3.mouse(this)[0]+70) + "px")
+      .style("top", (d3.mouse(this)[1]+height) + "px")
+}
+
+function mouseoutLegend(datum, index) {
+    Tooltip
+      .style("opacity", 0)
+      }
 
 function ready(error, gdp, exp, hiv) {
     // Add dots
@@ -134,20 +170,22 @@ function ready(error, gdp, exp, hiv) {
             return colorScale(data_growth.get(d['name']))
             //return 20
             })
+         .on('mouseover',mouseoverLegend)
+         .on("mousemove",mousemoveLegend)
+         .on('mouseout',mouseoutLegend)
 }
 
 
 
-
 // The svg
-var svg_map = d3.select("#my_dataviz2").append("g")
+var svg_map = d3.select("#my_dataviz2")
 
 // Map and projection
 var path = d3.geoPath();
 var projection = d3.geoMercator()
   .scale(70)
   .center([0,20])
-  .translate([width / 2, height / 2]);
+  //.translate([0, 0]);
 
 // Data and color scale
 var data = d3.map();
@@ -159,7 +197,7 @@ var colorScale2 = d3.scaleThreshold()
 d3.queue()
   .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
   .defer(d3.csv, "../data/population_total.csv",
-  function(d) { console.log(d);data.set(d.code, +d.pop); })
+  function(d) { data.set(d.country, +d["1980"]); })
   .await(ready2);
 
 function ready2(error, topo,tes) {
@@ -176,7 +214,8 @@ function ready2(error, topo,tes) {
       )
       // set the color of each country
       .attr("fill", function (d) {
-        d.total = data.get(d.id) || 0;
+      //console.log(d.properties.name)
+        d.total = data.get(d.properties.name) || 0;
         return colorScale2(d.total);
       });
     }
