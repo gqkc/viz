@@ -1,17 +1,3 @@
-<!-- Code from d3-graph-gallery.com -->
-<!DOCTYPE html>
-<meta charset="utf-8">
-
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
-
-<!-- Create an element where the map will take place -->
-<svg id="my_dataviz" width="400" height="300"></svg>
-
-
-<script>
 
 // The svg
 var svg = d3.select("svg"),
@@ -34,7 +20,8 @@ var colorScale = d3.scaleThreshold()
 // Load external data and boot
 d3.queue()
   .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-  .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { console.log(d);data.set(d.code, +d.pop); })
+  .defer(d3.csv, "data/population_total.csv",
+  function(d) { console.log(d);data.set(d.code, +d.pop); })
   .await(ready);
 
 function ready(error, topo) {
@@ -55,5 +42,3 @@ function ready(error, topo) {
         return colorScale(d.total);
       });
     }
-
-</script>
