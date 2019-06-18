@@ -25,6 +25,12 @@ var x = d3.scaleLinear()
     .domain([150, 10000])
     .range([height,0 ]);
 
+var z = d3.scaleLinear()
+    .domain([0, 1])
+    .range([ 2,3]);
+var colorScale = d3.scaleSequential()
+    .domain([-1,4]).interpolator(d3.interpolateReds);
+
    // text label for the y axis
 svg.append("text")
       .attr("transform", "rotate(-90)")
@@ -45,9 +51,7 @@ svg.append("g")
      // .attr("transform", "translate("+width+",0)")
    .call(d3.axisLeft(y));
 
-var z = d3.scaleLinear()
-    .domain([0, 1])
-    .range([ 2,3]);
+
 
 var Tooltip = d3.select("#divforbubble")
 .append("div")
@@ -61,8 +65,7 @@ var Tooltip = d3.select("#divforbubble")
 .style("position","absolute")
 
 
-var colorScale = d3.scaleSequential()
-    .domain([-1,4]).interpolator(d3.interpolateReds);
+
     //.range(d3.schemeBlues[7]);
 
 // Map and projection
@@ -72,7 +75,6 @@ var data_gdp = d3.map();
 var data_exp = d3.map();
 var data_hiv = d3.map();
 var data_growth = d3.map();
-
 
 // Load external data and boot
 d3.queue()
@@ -100,28 +102,42 @@ d3.queue()
 
 
 
-function mouseoverLegend(datum, index) {
+function mouseoverLegend(d, index) {
+
+    id=data2.get(d["name"])
+    //console.log(id)
+    //console.log(datum["name"])
+    //console.log(id)
+    //console.log(data2.get(id))
+      svg_map.selectAll("#feature"+id)
+        .style('fill', '#cc6699');
 
     Tooltip
       .style("opacity", 1)
       }
 
 
-function mousemoveLegend(datum, index) {
+function mousemoveLegend(d, index) {
 
-//console.log(data_hiv.get(datum["name"]))
+
+
     Tooltip
-      .html("Country: " + datum["name"]+
-      "<br> Hiv: "+data_hiv.get(datum["name"])+
-      "<br> Gdp: "+data_gdp.get(datum["name"])+
-      "<br> Life expectancy: "+data_exp.get(datum["name"])
+      .html("Country: " + d["name"]+
+      "<br> Hiv: "+data_hiv.get(d["name"])+
+      "<br> Gdp: "+data_gdp.get(d["name"])+
+      "<br> Life expectancy: "+data_exp.get(d["name"])
 
       )
       .style("left", (d3.mouse(this)[0]+70) + "px")
       .style("top", (d3.mouse(this)[1]+height) + "px")
 }
 
-function mouseoutLegend(datum, index) {
+function mouseoutLegend(d, index) {
+
+    id=data2.get(d["name"])
+    svg_map.selectAll("#feature"+id)
+        .style('fill', colorScale2(data.get(d["name"])));
+
     Tooltip
       .style("opacity", 0)
       }
@@ -189,6 +205,8 @@ var projection = d3.geoMercator()
 
 // Data and color scale
 var data = d3.map();
+var data2 = d3.map();
+
 var colorScale2 = d3.scaleThreshold()
   .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
   .range(d3.schemeBlues[7]);
@@ -197,11 +215,16 @@ var colorScale2 = d3.scaleThreshold()
 d3.queue()
   .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
   .defer(d3.csv, "../data/population_total.csv",
-  function(d) { data.set(d.country, +d["1980"]); })
+  function(d) { data.set(d.country, +d["2010"]); })
   .await(ready2);
 
 function ready2(error, topo,tes) {
-    console.log(topo)
+    //console.log(topo)
+    for (var feat in topo.features){
+
+        //console.log(topo.features[feat].properties.name)
+        data2.set(topo.features[feat].properties.name,topo.features[feat].id)
+    }
   // Draw the map
   svg_map.append("g")
     .selectAll("path")
@@ -212,10 +235,14 @@ function ready2(error, topo,tes) {
       .attr("d", d3.geoPath()
         .projection(projection)
       )
+      .attr("id",function (d) {
+     // console.log("feature"+d.id)
+        return "feature"+d.id;})
       // set the color of each country
       .attr("fill", function (d) {
       //console.log(d.properties.name)
         d.total = data.get(d.properties.name) || 0;
         return colorScale2(d.total);
       });
+
     }
