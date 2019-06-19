@@ -1,14 +1,110 @@
+
+var formatDateIntoYear = d3.timeFormat("%Y");
+var formatDate = d3.timeFormat("%b %Y");
+
+var startDate = new Date("1990"),
+    endDate = new Date("2010");
+
+var margin = {top:0, right:50, bottom:0, left:50},
+    width = 960 -margin.left - margin.right,
+    height = 120 - margin.top - margin.bottom;
+
+var svg11 = d3.select("#slider")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height);
+
+var x_time_scale = d3.scaleTime()
+    .domain([startDate, endDate])
+    .range([0, width])
+    .clamp(true);
+
+var slider = svg11.append("g")
+    .attr("class", "slider")
+    .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
+
+var handle = slider.insert("circle", ".track-overlay")
+    .attr("class", "handle")
+    .attr("r", 9);
+ var label = slider.append("text")
+    .attr("class", "label")
+    .attr("text-anchor", "middle")
+    .text(formatDateIntoYear(startDate))
+    .attr("transform", "translate(0," + (-25) + ")")
+function hue(h) {
+fill_with_data(formatDateIntoYear(h))
+    console.log(formatDateIntoYear(h))
+  handle.attr("cx", x_time_scale(h));
+  label
+    .attr("x", x_time_scale(h))
+    .text(formatDateIntoYear(h));
+  svg11.style("background-color", d3.hsl(h/1000000000, 0.8, 0.8));
+}
+slider.append("line")
+    .attr("class", "track")
+    .attr("x1", x_time_scale.range()[0])
+    .attr("x2", x_time_scale.range()[1])
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-inset")
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-overlay")
+    .call(d3.drag()
+        .on("start.interrupt", function() { slider.interrupt(); })
+        .on("start drag", function() { hue(x_time_scale.invert(d3.event.x)); }));
+
+
+console.log("dqs")
+
+
+
+/*
 // The svg
 var margin = {top: 20, right: 20, bottom: 50, left: 70},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
+var moving = false;
+var currentValue = 0;
+var targetValue = width;
+
+var playButton = d3.select("#play-button");
+var startDate = new Date("2004-11-01"),
+    endDate = new Date("2017-04-01");
+var xtime = d3.scaleTime()
+    .domain([startDate, endDate])
+    .range([0, targetValue])
+    .clamp(true);
+*/
  var svg = d3.select("#divforbubble").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
+
+/*
+var slider = d3.select("#vis").append("g")
+    .attr("class", "slider")
+    //.attr("transform", "translate(" + margin.left + "," + height/5 + ")");
+slider.append("line")
+    .attr("class", "track")
+    .attr("x1", xtime.range()[0])
+    .attr("x2", xtime.range()[1])
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-inset")
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-overlay")
+    .call(d3.drag()
+        .on("start.interrupt", function() { slider.interrupt(); })
+        .on("start drag", function() {
+          currentValue = d3.event.x;
+          update(xtime.invert(currentValue));
+        })
+    );
+
+*/
+
+
 
 
 // Add X axis
@@ -69,36 +165,65 @@ var Tooltip = d3.select("#divforbubble")
     //.range(d3.schemeBlues[7]);
 
 // Map and projection
+function fill_with_data(year){
+d3.selectAll("circle").remove()
+    // Data and color scale
+    var data_gdp = d3.map();
+    var data_exp = d3.map();
+    var data_hiv = d3.map();
+    var data_growth = d3.map();
 
-// Data and color scale
-var data_gdp = d3.map();
-var data_exp = d3.map();
-var data_hiv = d3.map();
-var data_growth = d3.map();
+    // Load external data and boot
+    d3.queue()
+        .defer(d3.csv, "../data/gdp.csv", function(d) {
+       //console.log(d)
+            data_gdp.set(d.name, +d[year]);
+            return d
+        })
+        .defer(d3.csv, "../data/lifeexpectancy.csv", function(d) {
+            //console.log(d)
+            data_exp.set(d.name, +d[year]);
+            return d
+        })
+        .defer(d3.csv, "../data/adults_with_hiv_percent_age_15_49.csv", function(d) {
+        //console.log(d["1991"])
+            data_hiv.set(d.country, +d[year]);
+            return d
+        })
+        .defer(d3.csv, "../data/population_growth_annual_percent.csv", function(d) {
+        //console.log(d["2010"])
+            data_growth.set(d.country, +d[year]);
+            return d
+        })
+        .await(ready);
 
-// Load external data and boot
-d3.queue()
-    .defer(d3.csv, "../data/gdp.csv", function(d) {
-   //console.log(d)
-        data_gdp.set(d.name, +d["2010"]);
-        return d
-    })
-    .defer(d3.csv, "../data/lifeexpectancy.csv", function(d) {
-        //console.log(d)
-        data_exp.set(d.name, +d["2010"]);
-        return d
-    })
-    .defer(d3.csv, "../data/adults_with_hiv_percent_age_15_49.csv", function(d) {
-    //console.log(d["1991"])
-        data_hiv.set(d.country, +d["2010"]);
-        return d
-    })
-    .defer(d3.csv, "../data/population_growth_annual_percent.csv", function(d) {
-    //console.log(d["2010"])
-        data_growth.set(d.country, +d["2010"]);
-        return d
-    })
-    .await(ready);
+        //data_hiv.
+
+    // The svg
+    var svg_map = d3.select("#my_dataviz2")
+
+    // Map and projection
+    var path = d3.geoPath();
+    var projection = d3.geoMercator()
+      .scale(70)
+      .center([0,20])
+      //.translate([0, 0]);
+
+    // Data and color scale
+    var data = d3.map();
+    var data2 = d3.map();
+
+    var colorScale2 = d3.scaleThreshold()
+      .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
+      .range(d3.schemeBlues[7]);
+
+    // Load external data and boot
+    d3.queue()
+      .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+      .defer(d3.csv, "../data/population_total.csv",
+      function(d) { data.set(d.country, +d["2010"]); })
+      .await(ready2);
+
 
 
 
@@ -193,31 +318,6 @@ function ready(error, gdp, exp, hiv) {
 
 
 
-// The svg
-var svg_map = d3.select("#my_dataviz2")
-
-// Map and projection
-var path = d3.geoPath();
-var projection = d3.geoMercator()
-  .scale(70)
-  .center([0,20])
-  //.translate([0, 0]);
-
-// Data and color scale
-var data = d3.map();
-var data2 = d3.map();
-
-var colorScale2 = d3.scaleThreshold()
-  .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-  .range(d3.schemeBlues[7]);
-
-// Load external data and boot
-d3.queue()
-  .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-  .defer(d3.csv, "../data/population_total.csv",
-  function(d) { data.set(d.country, +d["2010"]); })
-  .await(ready2);
-
 function ready2(error, topo,tes) {
     //console.log(topo)
     for (var feat in topo.features){
@@ -246,3 +346,11 @@ function ready2(error, topo,tes) {
       });
 
     }
+
+}
+
+
+
+
+
+
