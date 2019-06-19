@@ -11,6 +11,7 @@ var margin = {top: 20, right: 20, bottom: 50, left: 70},
           "translate(" + margin.left + "," + margin.top + ")");
 
 
+
 // Add X axis
 var x = d3.scaleLinear()
     .domain([40, 85])
@@ -68,36 +69,55 @@ var colorScale = d3.scaleSequential()
 // Map and projection
 
 // Data and color scale
-var data_gdp = d3.map();
-var data_exp = d3.map();
-var data_hiv = d3.map();
-var data_growth = d3.map();
+var data_1 = d3.map();
+var data_2 = d3.map();
+var data_3 = d3.map();
+var data_4 = d3.map();
+var xValue = $('#xAxis').val();
+var yValue = $('#yAxis').val();
+var year = $('#annee').val();
 
+$('#xAxis').on('change', function() {
+                xValue = $('#xAxis').val();
+                getData(xValue, yValue, year);
+            });
+
+$('#yAxis').on('change', function() {
+    yValue = $('#yAxis').val();
+    getData(xValue, yValue, year);
+});
+
+$('#annee').on('change', function() {
+    year = $('#annee').val();
+    getData(xValue, yValue, year);
+});
+var result = _.merge(data_3, data_2)
+console.log(result)
 
 // Load external data and boot
+function getData(key1,key2,year){
 d3.queue()
-    .defer(d3.csv, "../data/gdp.csv", function(d) {
+    .defer(d3.csv, "../data/"+key1+".csv", function(d) {
    //console.log(d)
-        data_gdp.set(d.name, +d["2010"]);
+        data_1.set(d.name, +d[year]);
         return d
     })
-    .defer(d3.csv, "../data/lifeexpectancy.csv", function(d) {
+    .defer(d3.csv, "../data/"+key2+".csv", function(d) {
         //console.log(d)
-        data_exp.set(d.name, +d["2010"]);
+        data_2.set(d.name, +d[year]);
         return d
     })
     .defer(d3.csv, "../data/adults_with_hiv_percent_age_15_49.csv", function(d) {
     //console.log(d["1991"])
-        data_hiv.set(d.country, +d["2010"]);
+        data_3.set(d.country, +d[year]);
         return d
     })
     .defer(d3.csv, "../data/population_growth_annual_percent.csv", function(d) {
-    //console.log(d["2010"])
-        data_growth.set(d.country, +d["2010"]);
+        data_4.set(d.country, +d[year]);
         return d
     })
     .await(ready);
-
+}
 
 
 function mouseoverLegend(datum, index) {
@@ -109,12 +129,12 @@ function mouseoverLegend(datum, index) {
 
 function mousemoveLegend(datum, index) {
 
-//console.log(data_hiv.get(datum["name"]))
+//console.log(data_3.get(datum["name"]))
     Tooltip
       .html("Country: " + datum["name"]+
-      "<br> Hiv: "+data_hiv.get(datum["name"])+
-      "<br> Gdp: "+data_gdp.get(datum["name"])+
-      "<br> Life expectancy: "+data_exp.get(datum["name"])
+      "<br> Hiv: "+data_3.get(datum["name"])+
+      "<br> Gdp: "+data_1.get(datum["name"])+
+      "<br> Life expectancy: "+data_2.get(datum["name"])
 
       )
       .style("left", (d3.mouse(this)[0]+70) + "px")
@@ -128,8 +148,8 @@ function mouseoutLegend(datum, index) {
 
 function ready(error, gdp, exp, hiv) {
     // Add dots
-   // console.log("hiv",data_hiv)
-    //console.log(data_gdp)
+   // console.log("hiv",data_3)
+    //console.log(data_1)
     /*var svg = d3.select("#my_dataviz")
         .append("svg")
         .attr("width", width)
@@ -142,32 +162,32 @@ function ready(error, gdp, exp, hiv) {
         .enter()
         .append("circle")
         .attr("cx", function(d) {
-           if (data_exp.get(d['name'])!= undefined)
-            return x(data_exp.get(d['name']));
+           if (data_2.get(d['name'])!= undefined)
+            return x(data_2.get(d['name']));
         })
         .attr("cy", function(d) {
-            if (data_gdp.get(d['name'])!= undefined){
-                //console.log(y(data_gdp.get(d['name'])))
-                return y(data_gdp.get(d['name']));
+            if (data_1.get(d['name'])!= undefined){
+                //console.log(y(data_1.get(d['name'])))
+                return y(data_1.get(d['name']));
 
                 }
         })
         .attr("r", function(d) {
-        //console.log(data_hiv.get(d['name']))
-            if (data_hiv.get(d['name'])== undefined){
-                //console.log(data_hiv.get(d['name']))
+        //console.log(data_3.get(d['name']))
+            if (data_3.get(d['name'])== undefined){
+                //console.log(data_3.get(d['name']))
                 return z(0)
                 }
-            return z(data_hiv.get(d['name']))
+            return z(data_3.get(d['name']))
             //return 20
             })
         .style("fill", function(d) {
-        //console.log(data_hiv.get(d['name']))
-            if (data_growth.get(d['name'])== undefined){
-                //console.log(data_hiv.get(d['name']))
+        //console.log(data_3.get(d['name']))
+            if (data_4.get(d['name'])== undefined){
+                //console.log(data_3.get(d['name']))
                 return colorScale(0)
                 }
-            return colorScale(data_growth.get(d['name']))
+            return colorScale(data_4.get(d['name']))
             //return 20
             })
          .on('mouseover',mouseoverLegend)

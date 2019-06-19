@@ -19,7 +19,7 @@
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/d3.v4.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
 
@@ -27,7 +27,7 @@
             var year = 2010;
             var xValue = "birth_rate";
             var yValue = "life_expectancy";
-            var color = d3.scale.category10();
+            var color = d3.scaleOrdinal(d3.schemeCategory10);
             var regions = ["Asia", "Europe", "South America", "Middle America", "North America", "Africa", "Oceania"]
 
             var width = 700,
@@ -43,27 +43,18 @@
                 .attr("class", "tooltip")
                 .style("opacity", 0);
 
-            var xScale = d3.scale.linear()
+            var xScale = d3.scaleLinear()
                 .range([0, width - 200])
                 .domain([0, 100])
                 .nice();
 
-            var yScale = d3.scale.linear()
+            var yScale = d3.scaleLinear()
                 .range([height, 0])
                 .domain([0, 100])
                 .nice();
 
-            var xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient('bottom')
-                .outerTickSize(1)
-                .tickPadding(4);
-
-            var yAxis = d3.svg.axis()
-                .scale(yScale)
-                .orient('left')
-                .outerTickSize(1)
-                .tickPadding(10);
+            var xAxis = d3.axisBottom(xScale);
+            var yAxis = d3.axisLeft(yScale);
 
             var svg = d3.select("#container").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -71,12 +62,15 @@
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+            console.log(xAxis)
+
+
             var svgXaxis = svg.append('g')
                 .attr({
                     'class': 'axis label',
                     'transform': 'translate(0,' + height + ')'
-                })
-                .call(xAxis);
+                }).call(xAxis)
+
 
             var svgYaxis = svg.append('g')
                 .attr({
@@ -301,8 +295,12 @@
                 yValue = $('#yAxis').val();
                 getData(xValue, yValue, year);
             });
-
+            var data_gdp = d3.map();
+            var data_exp = d3.map();
+            var data_hiv = d3.map();
+            var data_growth = d3.map();
             function getData(key1, key2, year) {
+              console.log('helo')
               d3.queue()
                   .defer(d3.csv, "../data/gdp.csv", function(d) {
                  //console.log(d)
