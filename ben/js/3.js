@@ -8,7 +8,7 @@ var startDate = new Date("1990"),
 var margin = {top:0, right:50, bottom:0, left:50},
     width = 960 -margin.left - margin.right,
     height = 120 - margin.top - margin.bottom;
-
+console.log(width)
 var svg11 = d3.select("#slider")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -56,52 +56,16 @@ console.log("dqs")
 
 
 
-/*
-// The svg
-var margin = {top: 20, right: 20, bottom: 50, left: 70},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
 
-var moving = false;
-var currentValue = 0;
-var targetValue = width;
-
-var playButton = d3.select("#play-button");
-var startDate = new Date("2004-11-01"),
-    endDate = new Date("2017-04-01");
-var xtime = d3.scaleTime()
-    .domain([startDate, endDate])
-    .range([0, targetValue])
-    .clamp(true);
-*/
  var svg = d3.select("#divforbubble").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
+console.log(svg)
 
-/*
-var slider = d3.select("#vis").append("g")
-    .attr("class", "slider")
-    //.attr("transform", "translate(" + margin.left + "," + height/5 + ")");
-slider.append("line")
-    .attr("class", "track")
-    .attr("x1", xtime.range()[0])
-    .attr("x2", xtime.range()[1])
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-inset")
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-overlay")
-    .call(d3.drag()
-        .on("start.interrupt", function() { slider.interrupt(); })
-        .on("start drag", function() {
-          currentValue = d3.event.x;
-          update(xtime.invert(currentValue));
-        })
-    );
 
-*/
 var xValue = $('#xAxis').val();
 var yValue = $('#yAxis').val();
 var year = $('#slider .label').val();
@@ -118,18 +82,16 @@ $('#yAxis').on('change', function() {
 });
 
 // Add X axis
-var x = d3.scaleLinear()
-    .domain([40, 85])
-    .range([0, width]);
 
- svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+
+ // svg.append("g")
+ //    .attr("transform", "translate(0," + height + ")")
+ //    .call(d3.axisBottom(xScale));
 
   // Add Y axis
-  var y = d3.scaleLinear()
-    .domain([150, 10000])
-    .range([height,0 ]);
+  // var y = d3.scaleLinear()
+  //   .domain([150, 10000])
+  //   .range([height,0 ]);
 
 var z = d3.scaleLinear()
     .domain([0, 1])
@@ -138,24 +100,11 @@ var colorScale = d3.scaleSequential()
     .domain([-1,4]).interpolator(d3.interpolateReds);
 
    // text label for the y axis
-svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("GDP / Capita");
 
-svg.append("text")
-      .attr("y", 0 + height)
-      .attr("x",0 + width/2)
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Life expectancy");
 
-svg.append("g")
-     // .attr("transform", "translate("+width+",0)")
-   .call(d3.axisLeft(y));
+// svg.append("g")
+//      // .attr("transform", "translate("+width+",0)")
+//    .call(d3.axisLeft(yScale));
 
 
 
@@ -176,6 +125,9 @@ var Tooltip = d3.select("#divforbubble")
 
 // Map and projection
 function fill_with_data(key1, key2, year){
+  // svg.transition()
+	// 				.call(xAxis);
+
 d3.selectAll("circle").remove()
     // Data and color scale
     var data_1 = d3.map();
@@ -208,7 +160,45 @@ d3.selectAll("circle").remove()
         .await(ready);
 
         //data_3.
+        var xScale = d3.scaleLinear()
+                        .range([0, width - 200])
+                        .domain([0, d3.max(data_1, function (d) { return d.name + 10; })])
+                        .nice();
 
+        var yScale = d3.scaleLinear()
+            .range([height, 0])
+            .domain([0, d3.max(data_2, function (d) { return d.name + 10; })])
+            .nice();
+        // console.log(yScale)
+
+        var xAxis = d3.axisBottom(xScale)
+        var yAxis = d3.axisLeft(yScale)
+        var svgXaxis = svg.append('g').attr("class", "x axis")
+                                      .attr('transform', 'translate(0,' + height + ')')
+                                      .call(xAxis);
+
+        var svgYaxis = svg.append('g').attr("class", "y axis")
+                                      .call(yAxis);
+
+
+              svgXaxis.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 0 - margin.left)
+                    .attr("x",0 - (height / 2))
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text(yValue);
+
+              svgYaxis.append("text")
+                    .attr("y", 0 + height)
+                    .attr("x",0 + width/2)
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text(xValue);
+
+
+              svgXaxis.transition().call(xAxis);
+              svgYaxis.transition().call(yAxis);
     // The svg
     var svg_map = d3.select("#my_dataviz2")
 
@@ -231,7 +221,7 @@ d3.selectAll("circle").remove()
     d3.queue()
       .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
       .defer(d3.csv, "../data/population_total.csv",
-      function(d) { data.set(d.country, +d["2010"]); })
+      function(d) { data.set(d.country, +d[year]); })
       .await(ready2);
 
 
@@ -278,28 +268,20 @@ function mouseoutLegend(d, index) {
       }
 
 function ready(error, gdp, exp, hiv) {
-    // Add dots
-   // console.log("hiv",data_3)
-    //console.log(data_1)
-    /*var svg = d3.select("#my_dataviz")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-*/
+    console.log('dd')
     svg.append('g')
         .selectAll("dot")
         .data(gdp)
         .enter()
         .append("circle")
         .attr("cx", function(d) {
-           if (data_2.get(d['name'])!= undefined)
-            return x(data_2.get(d['name']));
+           if (data_1.get(d['name'])!= undefined)
+            return xScale(data_1.get(d['name']));
         })
         .attr("cy", function(d) {
-            if (data_1.get(d['name'])!= undefined){
+            if (data_2.get(d['name'])!= undefined){
                 //console.log(y(data_1.get(d['name'])))
-                return y(data_1.get(d['name']));
+                return yScale(data_2.get(d['name']));
 
                 }
         })

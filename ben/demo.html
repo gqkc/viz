@@ -66,16 +66,15 @@
 
 
             var svgXaxis = svg.append('g')
-                .attr({
-                    'class': 'axis label',
-                    'transform': 'translate(0,' + height + ')'
-                }).call(xAxis)
+                              .attr('class', 'axis label')
+                              .attr('transform', 'translate(0,' + height + ')')
+                              .call(xAxis)
 
 
             var svgYaxis = svg.append('g')
-                .attr({
-                    'class': 'axis label'
-                })
+                .attr(
+                    'class', 'axis label'
+                )
                 .call(yAxis);
 
             var div = d3.select("body").append("div")
@@ -299,31 +298,63 @@
             var data_exp = d3.map();
             var data_hiv = d3.map();
             var data_growth = d3.map();
+            function ready(error) {
+    console.log(error ? "error: " + error.responseText : geoJSON);
+}
+
+function join(lookupTable, mainTable, lookupKey, mainKey, select) {
+    var l = lookupTable.length,
+        m = mainTable.length,
+        lookupIndex = [],
+        output = [];
+    for (var i = 0; i < l; i++) { // loop through l items
+        var row = lookupTable[i];
+        lookupIndex[row[lookupKey]] = row; // create an index for lookup table
+    }
+    for (var j = 0; j < m; j++) { // loop through m items
+        var y = mainTable[j];
+        var x = lookupIndex[y[mainKey]]; // get corresponding row from lookupTable
+        output.push(select(y, x)); // select only the columns you need
+    }
+    return output;
+};
             function getData(key1, key2, year) {
+              var data_1 = d3.map();
+              var data_2 = d3.map();
+              var data_3 = d3.map();
+              var data_4 = d3.map();
               console.log('helo')
               d3.queue()
-                  .defer(d3.csv, "../data/gdp.csv", function(d) {
+                  .defer(d3.csv, "../data/"+key1+".csv", function(d) {
                  //console.log(d)
-                      data_gdp.set(d.name, +d[year]);
+                      data_1.set(d.name, +d[year]);
+                      console.log(data_1)
                       return d
                   })
-                  .defer(d3.csv, "../data/lifeexpectancy.csv", function(d) {
+                  .defer(d3.csv, "../data/"+key2+".csv", function(d) {
                       //console.log(d)
-                      data_exp.set(d.name, +d[year]);
+                      data_2.set(d.name, +d[year]);
                       return d
                   })
                   .defer(d3.csv, "../data/adults_with_hiv_percent_age_15_49.csv", function(d) {
                   //console.log(d["1991"])
-                      data_hiv.set(d.country, +d[year]);
+                      data_3.set(d.country, +d[year]);
                       return d
                   })
                   .defer(d3.csv, "../data/population_growth_annual_percent.csv", function(d) {
                   //console.log(d["2010"])
-                      data_growth.set(d.country, +d[year]);
+                      data_4.set(d.country, +d[year]);
                       return d
                   })
+                  .await(ready);
                 };
-                return false;
+                return join(data_1, data_2, "name", year, function(article, brand) {
+    return {
+        name: article.name,
+        'data_1': article[key1],
+        'data_2': article[key2],
+    };
+});;
             })
 
         ;
