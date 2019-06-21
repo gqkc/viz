@@ -11,12 +11,16 @@ var margin = {
         left: 50
     },
     width = 960 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    width_slider = 960 - margin.left - margin.right,
+
+    height_slider = 100,
+
+    height = 500 - margin.top - margin.bottom;
 
 var svg11 = d3.select("#slider")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height);
+    .attr("height", height_slider);
 
 var x_time_scale = d3.scaleTime()
     .domain([startDate, endDate])
@@ -25,7 +29,7 @@ var x_time_scale = d3.scaleTime()
 
 var slider = svg11.append("g")
     .attr("class", "slider")
-    .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
+    .attr("transform", "translate(" + margin.left + "," + 40 + ")");
 
 var handle = slider.insert("circle", ".track-overlay")
     .attr("class", "handle")
@@ -94,7 +98,7 @@ var svg = d3.select("#divforbubble").append("svg")
     .attr("height", height )
     .append("g")
     .attr("transform",
-        "translate(" + margin.left + ",0)");
+        "translate(" + margin.left + ",50)");
 
 /*
 var slider = d3.select("#vis").append("g")
@@ -120,20 +124,19 @@ slider.append("line")
 
 
 
-
 // Add X axis
 var x = d3.scaleLinear()
     .domain([40, 85])
     .range([0, 500]);
 
 svg.append("g")
-    .attr("transform", "translate(0," + height + 0+")")
+    .attr("transform", "translate(0," +305 + ")")
     .call(d3.axisBottom(x));
 
 // Add Y axis
 var y = d3.scaleLinear()
     .domain([150, 10000])
-    .range([200, 0]);
+    .range([300, 0]);
 
 var z = d3.scaleLinear()
     .domain([0, 1])
@@ -285,7 +288,7 @@ function fill_with_data(year) {
 
         id = data2.get(d["name"])
         svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale2(data_continent.get(d["name"])));
+            .style('fill', colorScale2(data.get(d["name"])));
 
         Tooltip
             .style("opacity", 0)
