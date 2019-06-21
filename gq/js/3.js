@@ -43,7 +43,7 @@ function hue(h) {
     label
         .attr("x", x_time_scale(h))
         .text(formatDateIntoYear(h));
-    svg11.style("background-color", d3.hsl(h / 1000000000, 0.8, 0.8));
+    //svg11.style("background-color", d3.hsl(h / 1000000000, 0.8, 0.8));
 }
 slider.append("line")
     .attr("class", "track")
@@ -209,9 +209,16 @@ function fill_with_data(year) {
             data_growth.set(d.name, +d[year]);
             return d
         })
+       .defer(d3.csv, "../data/continent.csv",
+            function(d) {
+            //console.log(d["group"])
+                data_continent.set(d.name, d["group"]);
+            })
         .await(ready);
 
     //data_hiv.
+    var colours = d3.scaleOrdinal(d3.schemeCategory10)
+	.domain(["America", "Sub-Saharan Africa", "Europe & Central Asia", "Middle East & North Africa","South Asia","East Asia & Pacific"]);
 
     // The svg
     var svg_map = d3.select("#my_dataviz2")
@@ -226,6 +233,7 @@ function fill_with_data(year) {
     // Data and color scale
     var data = d3.map();
     var data2 = d3.map();
+    var data_continent = d3.map();
 
     var colorScale2 = d3.scaleThreshold()
         .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
@@ -236,12 +244,9 @@ function fill_with_data(year) {
         .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
         .defer(d3.csv, "../data/population_total.csv",
             function(d) {
-                data.set(d.country, +d[year]);
+                data.set(d.name, +d[year]);
             })
-        .defer(d3.csv, "../data/continent.csv",
-            function(d) {
-                data2.set(d.name, +d["group"]);
-            })
+
         .await(ready2);
 
 
@@ -281,7 +286,7 @@ function fill_with_data(year) {
 
         id = data2.get(d["name"])
         svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale2(data.get(d["name"])));
+            .style('fill', colorScale2(data_continent.get(d["name"])));
 
         Tooltip
             .style("opacity", 0)
@@ -324,11 +329,11 @@ function fill_with_data(year) {
             })
             .style("fill", function(d) {
                 //console.log(data_hiv.get(d['name']))
-                if (data_growth.get(d['name']) == undefined) {
+                if (data_continent.get(d['name']) == undefined) {
                     //console.log(data_hiv.get(d['name']))
-                    return colorScale(0)
+                    return colours(0)
                 }
-                return colorScale(data_growth.get(d['name']))
+                return colours(data_continent.get(d['name']))
                 //return 20
             })
             .on('mouseover', mouseoverLegend)
@@ -339,7 +344,8 @@ function fill_with_data(year) {
 
 
     function ready2(error, topo, tes) {
-        //console.log(topo)
+
+     //console.log(topo)
         for (var feat in topo.features) {
 
             //console.log(topo.features[feat].properties.name)
@@ -361,7 +367,7 @@ function fill_with_data(year) {
             })
             // set the color of each country
             .attr("fill", function(d) {
-                //console.log(d.properties.name)
+                console.log(data_continent)
                 d.total = data.get(d.properties.name) || 0;
                 return colorScale2(d.total);
             });
