@@ -68,7 +68,7 @@ slider.append("line")
 
 //console.log(document.getElementById("slider").value)
 console.log("aa")
-hue("1990")
+hue(startDate)
 
 
 /*
@@ -91,10 +91,10 @@ var xtime = d3.scaleTime()
 */
 var svg = d3.select("#divforbubble").append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("height", height +400)
     .append("g")
     .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+        "translate(" + margin.left + ",100)");
 
 /*
 var slider = d3.select("#vis").append("g")
