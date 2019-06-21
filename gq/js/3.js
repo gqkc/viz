@@ -66,8 +66,9 @@ slider.append("line")
         }));
 
 
-console.log("dqs")
-
+//console.log(document.getElementById("slider").value)
+console.log("aa")
+hue("1990")
 
 
 /*
@@ -200,12 +201,12 @@ function fill_with_data(year) {
         })
         .defer(d3.csv, "../data/adults_with_hiv_percent_age_15_49.csv", function(d) {
             //console.log(d["1991"])
-            data_hiv.set(d.country, +d[year]);
+            data_hiv.set(d.name, +d[year]);
             return d
         })
         .defer(d3.csv, "../data/population_growth_annual_percent.csv", function(d) {
             //console.log(d["2010"])
-            data_growth.set(d.country, +d[year]);
+            data_growth.set(d.name, +d[year]);
             return d
         })
         .await(ready);
@@ -235,7 +236,11 @@ function fill_with_data(year) {
         .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
         .defer(d3.csv, "../data/population_total.csv",
             function(d) {
-                data.set(d.country, +d["2010"]);
+                data.set(d.country, +d[year]);
+            })
+        .defer(d3.csv, "../data/continent.csv",
+            function(d) {
+                data2.set(d.name, +d["group"]);
             })
         .await(ready2);
 
