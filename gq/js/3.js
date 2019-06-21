@@ -11,7 +11,7 @@ var margin = {
         left: 50
     },
     width = 960 - margin.left - margin.right,
-    height = 120 - margin.top - margin.bottom;
+    height = 400 - margin.top - margin.bottom;
 
 var svg11 = d3.select("#slider")
     .append("svg")
@@ -90,11 +90,11 @@ var xtime = d3.scaleTime()
     .clamp(true);
 */
 var svg = d3.select("#divforbubble").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height +400)
+    .attr("width", 600)
+    .attr("height", height )
     .append("g")
     .attr("transform",
-        "translate(" + margin.left + ",100)");
+        "translate(" + margin.left + ",0)");
 
 /*
 var slider = d3.select("#vis").append("g")
@@ -124,16 +124,16 @@ slider.append("line")
 // Add X axis
 var x = d3.scaleLinear()
     .domain([40, 85])
-    .range([0, width]);
+    .range([0, 500]);
 
 svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(0," + height + 0+")")
     .call(d3.axisBottom(x));
 
 // Add Y axis
 var y = d3.scaleLinear()
     .domain([150, 10000])
-    .range([height, 0]);
+    .range([200, 0]);
 
 var z = d3.scaleLinear()
     .domain([0, 1])
@@ -151,7 +151,7 @@ svg.append("text")
     .text("GDP / Capita");
 
 svg.append("text")
-    .attr("y", 0 + height)
+    .attr("y", 0 + height +30)
     .attr("x", 0 + width / 2)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
@@ -222,6 +222,8 @@ function fill_with_data(year) {
 
     // The svg
     var svg_map = d3.select("#my_dataviz2")
+    .attr("transform", "translate(-150,0)")
+
 
     // Map and projection
     var path = d3.geoPath();
@@ -246,7 +248,6 @@ function fill_with_data(year) {
             function(d) {
                 data.set(d.name, +d[year]);
             })
-
         .await(ready2);
 
 
@@ -269,8 +270,6 @@ function fill_with_data(year) {
 
     function mousemoveLegend(d, index) {
 
-
-
         Tooltip
             .html("Country: " + d["name"] +
                 "<br> Hiv: " + data_hiv.get(d["name"]) +
@@ -278,7 +277,7 @@ function fill_with_data(year) {
                 "<br> Life expectancy: " + data_exp.get(d["name"])
 
             )
-            .style("left", (d3.mouse(this)[0] + 70) + "px")
+            .style("left", (d3.mouse(this)[0] + width-100) + "px")
             .style("top", (d3.mouse(this)[1] + height) + "px")
     }
 
@@ -336,6 +335,7 @@ function fill_with_data(year) {
                 return colours(data_continent.get(d['name']))
                 //return 20
             })
+            .style("stroke", "white")
             .on('mouseover', mouseoverLegend)
             .on("mousemove", mousemoveLegend)
             .on('mouseout', mouseoutLegend)
