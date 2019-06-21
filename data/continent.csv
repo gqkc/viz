@@ -1,0 +1,188 @@
+name,income,health,population,group
+Afghanistan,1925,57.63,32526562,South Asia
+Albania,10620,76,2896679,Europe & Central Asia
+Algeria,13434,76.5,39666519,Middle East & North Africa
+Andorra,46577,84.1,70473,Europe & Central Asia
+Angola,7615,61,25021974,Sub-Saharan Africa
+Antigua and Barbuda,21049,75.2,91818,America
+Argentina,17344,76.2,43416755,America
+Armenia,7763,74.4,3017712,Europe & Central Asia
+Australia,44056,81.8,23968973,East Asia & Pacific
+Austria,44401,81,8544586,Europe & Central Asia
+Azerbaijan,16986,72.9,9753968,Europe & Central Asia
+Bahamas,22818,72.3,388019,America
+Bahrain,44138,79.2,1377237,Middle East & North Africa
+Bangladesh,3161,70.1,160995642,South Asia
+Barbados,12984,75.8,284215,America
+Belarus,17415,70.4,9495826,Europe & Central Asia
+Belgium,41240,80.4,11299192,Europe & Central Asia
+Belize,8501,70,359287,America
+Benin,1830,65.5,10879829,Sub-Saharan Africa
+Bhutan,7983,70.2,774830,South Asia
+Bolivia,6295,72.3,10724705,America
+Bosnia and Herzegovina,9833,77.9,3810416,Europe & Central Asia
+Botswana,17196,66.4,2262485,Sub-Saharan Africa
+Brazil,15441,75.6,207847528,America
+Brunei,73003,78.7,423188,East Asia & Pacific
+Bulgaria,16371,74.9,7149787,Europe & Central Asia
+Burkina Faso,1654,62.8,18105570,Sub-Saharan Africa
+Burundi,777,60.4,11178921,Sub-Saharan Africa
+Cambodia,3267,68.4,15577899,East Asia & Pacific
+Cameroon,2897,59.5,23344179,Sub-Saharan Africa
+Canada,43294,81.7,35939927,America
+Cape Verde,6514,74.6,520502,Sub-Saharan Africa
+Central African Republic,599,53.8,4900274,Sub-Saharan Africa
+Chad,2191,57.7,14037472,Sub-Saharan Africa
+Chile,22465,79.3,17948141,America
+China,13334,76.9,1376048943,East Asia & Pacific
+Colombia,12761,75.8,48228704,America
+Comoros,1472,64.1,788474,Sub-Saharan Africa
+"Congo, Dem. Rep.",809,58.3,77266814,Sub-Saharan Africa
+"Congo, Rep.",6220,61.9,4620330,Sub-Saharan Africa
+Costa Rica,14132,80,4807850,America
+Cote d'Ivoire,3491,60.33,22701556,Sub-Saharan Africa
+Croatia,20260,78,4240317,Europe & Central Asia
+Cuba,21291,78.5,11389562,America
+Cyprus,29797,82.6,1165300,Europe & Central Asia
+Czech Republic,29437,78.6,10543186,Europe & Central Asia
+Denmark,43495,80.1,5669081,Europe & Central Asia
+Djibouti,3139,64.63,887861,Middle East & North Africa
+Dominica,10503,74.6,72680,America
+Dominican Republic,12837,73.8,10528391,America
+Ecuador,10996,75.2,16144363,America
+Egypt,11031,71.3,91508084,Middle East & North Africa
+El Salvador,7776,74.1,6126583,America
+Equatorial Guinea,31087,60.63,845060,Sub-Saharan Africa
+Eritrea,1129,62.9,5227791,Sub-Saharan Africa
+Estonia,26812,76.8,1312558,Europe & Central Asia
+Ethiopia,1520,63.6,99390750,Sub-Saharan Africa
+Fiji,7925,66.3,892145,East Asia & Pacific
+Finland,38923,80.8,5503457,Europe & Central Asia
+France,37599,81.9,64395345,Europe & Central Asia
+Gabon,18627,60.53,1725292,Sub-Saharan Africa
+Gambia,1644,65.1,1990924,Sub-Saharan Africa
+Georgia,7474,73.3,3999812,Europe & Central Asia
+Germany,44053,81.1,80688545,Europe & Central Asia
+Ghana,4099,65.5,27409893,Sub-Saharan Africa
+Greece,25430,79.8,10954617,Europe & Central Asia
+Grenada,11593,71.7,106825,America
+Guatemala,7279,73.1,16342897,America
+Guinea,1225,60.8,12608590,Sub-Saharan Africa
+Guinea-Bissau,1386,53.4,1844325,Sub-Saharan Africa
+Guyana,6816,64.4,767085,America
+Haiti,1710,65.3,10711067,America
+Honduras,4270,72.4,8075060,America
+Hungary,24200,76.2,9855023,Europe & Central Asia
+Iceland,42182,82.8,329425,Europe & Central Asia
+India,5903,66.8,1311050527,South Asia
+Indonesia,10504,70.9,257563815,East Asia & Pacific
+Iran,15573,78.5,79109272,Middle East & North Africa
+Iraq,14646,72.1,36423395,Middle East & North Africa
+Ireland,47758,80.4,4688465,Europe & Central Asia
+Israel,31590,82.4,8064036,Middle East & North Africa
+Italy,33297,82.1,59797685,Europe & Central Asia
+Jamaica,8606,75.5,2793335,America
+Japan,36162,83.5,126573481,East Asia & Pacific
+Jordan,11752,78.3,7594547,Middle East & North Africa
+Kazakhstan,23468,68.2,17625226,Europe & Central Asia
+Kenya,2898,66.63,46050302,Sub-Saharan Africa
+Kiribati,1824,62.4,112423,East Asia & Pacific
+Kuwait,82633,80.7,3892115,Middle East & North Africa
+Kyrgyz Republic,3245,69,5939962,Europe & Central Asia
+Lao,5212,66.4,6802023,East Asia & Pacific
+Latvia,23282,75.7,1970503,Europe & Central Asia
+Lebanon,17050,78.5,5850743,Middle East & North Africa
+Lesotho,2598,48.5,2135022,Sub-Saharan Africa
+Liberia,958,63.9,4503438,Sub-Saharan Africa
+Libya,17261,76.2,6278438,Middle East & North Africa
+Lithuania,26665,75.4,2878405,Europe & Central Asia
+Luxembourg,88314,81.1,567110,Europe & Central Asia
+"Macedonia, FYR",12547,77,2078453,Europe & Central Asia
+Madagascar,1400,64.7,24235390,Sub-Saharan Africa
+Malawi,799,60.22,17215232,Sub-Saharan Africa
+Malaysia,24320,75.1,30331007,East Asia & Pacific
+Maldives,14408,79.5,363657,South Asia
+Mali,1684,57.6,17599694,Sub-Saharan Africa
+Malta,30265,82.1,418670,Europe & Central Asia
+Marshall Islands,3661,65.1,52993,East Asia & Pacific
+Mauritania,3877,65.7,4067564,Sub-Saharan Africa
+Mauritius,18350,73.9,1273212,Sub-Saharan Africa
+Mexico,16850,74.5,127017224,America
+"Micronesia, Fed. Sts.",3510,67,104460,East Asia & Pacific
+Moldova,4896,72.7,4068897,Europe & Central Asia
+Mongolia,11819,65.3,2959134,East Asia & Pacific
+Montenegro,14833,75.8,625781,Europe & Central Asia
+Morocco,7319,74.7,34377511,Middle East & North Africa
+Mozambique,1176,56.4,27977863,Sub-Saharan Africa
+Myanmar,4012,67.9,53897154,East Asia & Pacific
+Namibia,10040,61,2458830,Sub-Saharan Africa
+Nepal,2352,71.2,28513700,South Asia
+Netherlands,45784,80.6,16924929,Europe & Central Asia
+New Zealand,34186,80.6,4528526,East Asia & Pacific
+Nicaragua,4712,76.8,6082032,America
+Niger,943,62.2,19899120,Sub-Saharan Africa
+Nigeria,5727,61.33,182201962,Sub-Saharan Africa
+North Korea,1390,71.4,25155317,East Asia & Pacific
+Norway,64304,81.6,5210967,Europe & Central Asia
+Oman,48226,75.7,4490541,Middle East & North Africa
+Pakistan,4743,66.5,188924874,South Asia
+Panama,20485,78.2,3929141,America
+Papua New Guinea,2529,60.6,7619321,East Asia & Pacific
+Paraguay,8219,73.9,6639123,America
+Peru,11903,77.5,31376670,America
+Philippines,6876,70.2,100699395,East Asia & Pacific
+Poland,24787,77.3,38611794,Europe & Central Asia
+Portugal,26437,79.8,10349803,Europe & Central Asia
+Qatar,132877,82,2235355,Middle East & North Africa
+Romania,19203,76.8,19511324,Europe & Central Asia
+Russia,23038,73.13,143456918,Europe & Central Asia
+Rwanda,1549,66.53,11609666,Sub-Saharan Africa
+Samoa,5558,72.2,193228,East Asia & Pacific
+Sao Tome and Principe,3003,68.8,190344,Sub-Saharan Africa
+Saudi Arabia,52469,78.1,31540372,Middle East & North Africa
+Senegal,2251,66.1,15129273,Sub-Saharan Africa
+Serbia,12908,78.1,8850975,Europe & Central Asia
+Seychelles,25684,73.7,96471,Sub-Saharan Africa
+Sierra Leone,2085,58.5,6453184,Sub-Saharan Africa
+Singapore,80794,82.1,5603740,East Asia & Pacific
+Slovak Republic,27204,76.4,5426258,Europe & Central Asia
+Slovenia,28550,80.2,2067526,Europe & Central Asia
+Solomon Islands,2047,64.1,583591,East Asia & Pacific
+Somalia,624,58.7,10787104,Sub-Saharan Africa
+South Africa,12509,63.72,54490406,Sub-Saharan Africa
+South Korea,34644,80.7,50293439,East Asia & Pacific
+South Sudan,3047,58,12339812,Sub-Saharan Africa
+Spain,32979,81.7,46121699,Europe & Central Asia
+Sri Lanka,10624,76.5,20715010,South Asia
+St. Lucia,9997,74.5,184999,America
+St. Vincent and the Grenadines,10435,72.9,109462,America
+Sudan,3975,69.5,40234882,Sub-Saharan Africa
+Suriname,17125,70.5,542975,America
+Swaziland,6095,51.5,1286970,Sub-Saharan Africa
+Sweden,44892,82,9779426,Europe & Central Asia
+Switzerland,56118,82.9,8298663,Europe & Central Asia
+Syria,4637,70.26,18502413,Middle East & North Africa
+Tajikistan,2582,71,8481855,Europe & Central Asia
+Tanzania,2571,63.43,53470420,Sub-Saharan Africa
+Thailand,14512,75.1,67959359,East Asia & Pacific
+Timor-Leste,2086,72.4,1184765,East Asia & Pacific
+Togo,1433,64.23,7304578,Sub-Saharan Africa
+Tonga,5069,70.5,106170,East Asia & Pacific
+Trinidad and Tobago,30113,71.4,1360088,America
+Tunisia,11126,77.3,11253554,Middle East & North Africa
+Turkey,19360,76.5,78665830,Europe & Central Asia
+Turkmenistan,15865,67.9,5373502,Europe & Central Asia
+Uganda,1680,60.8,39032383,Sub-Saharan Africa
+Ukraine,8449,72.1,44823765,Europe & Central Asia
+United Arab Emirates,60749,76.6,9156963,Middle East & North Africa
+United Kingdom,38225,81.4,64715810,Europe & Central Asia
+United States,53354,79.1,321773631,America
+Uruguay,20438,77.3,3431555,America
+Uzbekistan,5598,70.1,29893488,Europe & Central Asia
+Vanuatu,2912,65,264652,East Asia & Pacific
+Venezuela,15753,75.8,31108083,America
+Vietnam,5623,76.5,93447601,East Asia & Pacific
+West Bank and Gaza,4319,75.2,4668466,Middle East & North Africa
+Yemen,3887,67.6,26832215,Middle East & North Africa
+Zambia,4034,58.96,16211767,Sub-Saharan Africa
+Zimbabwe,1801,60.01,15602751,Sub-Saharan Africa
