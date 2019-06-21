@@ -148,14 +148,14 @@ var colorScale = d3.scaleSequential()
 svg.append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", 0 - margin.left)
-    .attr("x", 0 - (height / 2))
+    .attr("x", 0 - 150)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .text("GDP / Capita");
 
 svg.append("text")
-    .attr("y", 0 + height +30)
-    .attr("x", 0 + width / 2)
+    .attr("y", 330)
+    .attr("x", "50%")
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .text("Life expectancy");
@@ -246,7 +246,7 @@ function fill_with_data(year) {
 
     // Load external data and boot
     d3.queue()
-        .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+        .defer(d3.json, "../data/world.geojson")
         .defer(d3.csv, "../data/population_total.csv",
             function(d) {
                 data.set(d.name, +d[year]);
@@ -281,7 +281,7 @@ function fill_with_data(year) {
 
             )
             .style("left", (d3.mouse(this)[0] + width-100) + "px")
-            .style("top", (d3.mouse(this)[1] + height) + "px")
+            .style("top", (d3.mouse(this)[1] + 200) + "px")
     }
 
     function mouseoutLegend(d, index) {
