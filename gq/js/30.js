@@ -17,14 +17,19 @@ var margin = {
 
     height = 500 - margin.top - margin.bottom;
 
+var playButton = d3.select("#play-button");
+var moving = false;
+var currentValue = 0;
+var targetValue = width_slider;
+
 var svg11 = d3.select("#slider")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
+    .attr("width", width_slider + margin.left + margin.right)
     .attr("height", height_slider);
 
 var x_time_scale = d3.scaleTime()
     .domain([startDate, endDate])
-    .range([0, width])
+    .range([0, width_slider])
     .clamp(true);
 
 var slider = svg11.append("g")
@@ -42,7 +47,7 @@ var label = slider.append("text")
 
 function hue(h) {
     fill_with_data(formatDateIntoYear(h))
-    console.log(formatDateIntoYear(h))
+    // console.log(formatDateIntoYear(h))
     handle.attr("cx", x_time_scale(h));
     label
         .attr("x", x_time_scale(h))
@@ -182,7 +187,36 @@ var Tooltip = d3.select("#divforbubble")
 //.range(d3.schemeBlues[7]);
 
 // Map and projection
+function step() {
+  hue(x_time_scale.invert(currentValue));
+  currentValue = currentValue + (targetValue/151);
+  // console.log(x_time_scale.invert(currentValue))
+  if (currentValue > targetValue) {
+    moving = false;
+    currentValue = 0;
+    clearInterval(timer);
+    // timer = 0;
+    playButton.text("Play");
+    console.log("Slider moving: " + moving);
+  }
+}
+
 function fill_with_data(year) {
+  playButton
+    .on("click", function() {
+    var button = d3.select(this);
+    if (button.text() == "Pause") {
+      moving = false;
+      clearInterval(timer);
+      // timer = 0;
+      button.text("Play");
+    } else {
+      moving = true;
+      timer = setInterval(step, 100);
+      button.text("Pause");
+    }})
+
+
     d3.selectAll("circle").remove()
     // Data and color scale
     var data_gdp = d3.map();
@@ -293,7 +327,7 @@ function fill_with_data(year) {
     }
 
     function mousemoveLegend(d, index) {
-      console.log(d)
+      // console.log(d)
 
         Tooltip
             .html("Country: " + d["name"] +
