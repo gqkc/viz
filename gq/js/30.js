@@ -38,7 +38,8 @@ var slider = svg11.append("g")
 
 var handle = slider.insert("circle", ".track-overlay")
     .attr("class", "handle")
-    .attr("r", 9);
+    .attr("r", 15);
+
 var label = slider.append("text")
     .attr("class", "label")
     .attr("text-anchor", "middle")
@@ -71,8 +72,21 @@ slider.append("line")
             slider.interrupt();
         })
         .on("start drag", function() {
+          currentValue = d3.event.x;
             hue(x_time_scale.invert(d3.event.x));
         }));
+
+slider.insert("g", ".track-overlay")
+    .attr("class", "ticks")
+    .attr("transform", "translate(0," + 18 + ")")
+  .selectAll("text")
+    .data(x_time_scale.ticks(10))
+    .enter()
+    .append("text")
+    .attr("x", x_time_scale)
+    .attr("y", 10)
+    .attr("text-anchor", "middle")
+    .text(function(d) { return formatDateIntoYear(d); });
 
 
 //console.log(document.getElementById("slider").value)
@@ -202,6 +216,8 @@ function step() {
 }
 
 function fill_with_data(year) {
+  d3.selectAll("circle").remove()
+
   playButton
     .on("click", function() {
     var button = d3.select(this);
@@ -215,9 +231,6 @@ function fill_with_data(year) {
       timer = setInterval(step, 100);
       button.text("Pause");
     }})
-
-
-    d3.selectAll("circle").remove()
     // Data and color scale
     var data_gdp = d3.map();
     var data_exp = d3.map();
