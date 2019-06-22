@@ -411,7 +411,7 @@ function fill_with_data(year) {
     if (first == false){
       svg.selectAll("circle")
           .transition()
-          .duration(40)
+          .duration(20)
           .attr("cx", function(d) {
               if (data_exp.get(d['name']) != undefined)
                   return x(data_exp.get(d['name']));
@@ -445,10 +445,10 @@ function fill_with_data(year) {
               return colours(data_continent.get(d['name']))
               //return 20
           })
-          .style("stroke", "white")
-          .on('mouseover', mouseoverLegend)
-          .on("mousemove", mousemoveLegend)
-          .on('mouseout', mouseoutLegend)
+          // .style("stroke", "white")
+          // .on('mouseover', mouseoverLegend)
+          // .on("mousemove", mousemoveLegend)
+          // .on('mouseout', mouseoutLegend)
   }}
 
 
