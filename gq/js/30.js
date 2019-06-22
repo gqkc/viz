@@ -2,7 +2,7 @@ var formatDateIntoYear = d3.timeFormat("%Y");
 var formatDate = d3.timeFormat("%b %Y");
 
 var startDate = new Date("1990"),
-    endDate = new Date("2010");
+    endDate = new Date("2011");
 
 var margin = {
         top: 0,
@@ -38,7 +38,7 @@ var slider = svg11.append("g")
 
 var handle = slider.insert("circle", ".track-overlay")
     .attr("class", "handle")
-    .attr("r", 15);
+    .attr("r", 10);
 
 var label = slider.append("text")
     .attr("class", "label")
@@ -88,60 +88,14 @@ slider.insert("g", ".track-overlay")
     .attr("text-anchor", "middle")
     .text(function(d) { return formatDateIntoYear(d); });
 
-
-//console.log(document.getElementById("slider").value)
-console.log("aa")
 hue(startDate)
 
-
-/*
-// The svg
-var margin = {top: 20, right: 20, bottom: 50, left: 70},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-var moving = false;
-var currentValue = 0;
-var targetValue = width;
-
-var playButton = d3.select("#play-button");
-var startDate = new Date("2004-11-01"),
-    endDate = new Date("2017-04-01");
-var xtime = d3.scaleTime()
-    .domain([startDate, endDate])
-    .range([0, targetValue])
-    .clamp(true);
-*/
 var svg = d3.select("#divforbubble").append("svg")
     .attr("width", 600)
     .attr("height", height )
     .append("g")
     .attr("transform",
         "translate(" + margin.left + ",50)");
-
-/*
-var slider = d3.select("#vis").append("g")
-    .attr("class", "slider")
-    //.attr("transform", "translate(" + margin.left + "," + height/5 + ")");
-slider.append("line")
-    .attr("class", "track")
-    .attr("x1", xtime.range()[0])
-    .attr("x2", xtime.range()[1])
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-inset")
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-overlay")
-    .call(d3.drag()
-        .on("start.interrupt", function() { slider.interrupt(); })
-        .on("start drag", function() {
-          currentValue = d3.event.x;
-          update(xtime.invert(currentValue));
-        })
-    );
-
-*/
-
-
 
 // Add X axis
 var x = d3.scaleLinear()
@@ -199,7 +153,7 @@ var Tooltip = d3.select("#divforbubble")
 
 
 //.range(d3.schemeBlues[7]);
-
+var first = true;
 // Map and projection
 function step() {
   hue(x_time_scale.invert(currentValue));
@@ -216,7 +170,7 @@ function step() {
 }
 
 function fill_with_data(year) {
-  d3.selectAll("circle").remove()
+  // d3.selectAll("circle").remove()
 
   playButton
     .on("click", function() {
@@ -408,8 +362,9 @@ function fill_with_data(year) {
         .attr("height", height)
         .append("g")
 */
+        if (first ==true){
         svg.append('g')
-            .selectAll("dot")
+            .selectAll("dots")
             .data(gdp)
             .enter()
             .append("circle")
@@ -450,7 +405,51 @@ function fill_with_data(year) {
             .on('mouseover', mouseoverLegend)
             .on("mousemove", mousemoveLegend)
             .on('mouseout', mouseoutLegend)
+
+    first = false
     }
+    if (first == false){
+      svg.selectAll("circle")
+          .transition()
+          .duration(40)
+          .attr("cx", function(d) {
+              if (data_exp.get(d['name']) != undefined)
+                  return x(data_exp.get(d['name']));
+          })
+          .attr("cy", function(d) {
+              if (data_gdp.get(d['name']) != undefined) {
+                  //console.log(y(data_gdp.get(d['name'])))
+                  return y(data_gdp.get(d['name']));
+
+              }
+          })
+          .attr("r", function(d) {
+              //console.log(data_hiv.get(d['name']))
+              if (data_hiv.get(d['name']) == undefined) {
+                  //console.log(data_hiv.get(d['name']))
+                  return z(0)
+              }
+              return z(data_hiv.get(d['name']))
+              //return 20
+          })
+          .attr("id", function(d) {
+              // console.log("feature"+d.name)
+              return "feature" + d.name;
+          })
+          .style("fill", function(d) {
+              //console.log(data_hiv.get(d['name']))
+              if (data_continent.get(d['name']) == undefined) {
+                  //console.log(data_hiv.get(d['name']))
+                  return colours(0)
+              }
+              return colours(data_continent.get(d['name']))
+              //return 20
+          })
+          .style("stroke", "white")
+          .on('mouseover', mouseoverLegend)
+          .on("mousemove", mousemoveLegend)
+          .on('mouseout', mouseoutLegend)
+  }}
 
 
 
