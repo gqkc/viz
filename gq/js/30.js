@@ -265,6 +265,7 @@ function fill_with_data(year) {
         //console.log(data2.get(id))
         svg.selectAll("#feature" + d.name)
             .style("stroke", "black")
+            .style("stroke-width", 5)
 
         svg_map.selectAll("#feature" + id)
             .style('fill', '#cc6699');
@@ -281,11 +282,12 @@ function fill_with_data(year) {
         //console.log(datum["name"])
         // console.log(id)
         //console.log(data2.get(id))
+        // console.log(d)
         svg_map.selectAll("#feature" + id)
             .style('fill', '#cc6699');
         svg.selectAll("#feature" + d.properties.name)
             .style("stroke", "black")
-
+            .style("stroke-width", 5)
         Tooltip
             .style("opacity", 1)
     }
@@ -315,8 +317,8 @@ function fill_with_data(year) {
                 "<br> Life expectancy: " + data_exp.get(i)
 
             )
-            .style("left", (d3.mouse(this)[0] + width-100) + "px")
-            .style("top", (d3.mouse(this)[1] + 200) + "px")
+            .style("left", x(data_exp.get(i))+700 + "px")
+            .style("top", y(data_gdp.get(i))+180 + "px")
 
 
     }
@@ -332,6 +334,7 @@ function fill_with_data(year) {
 
             svg.selectAll("#feature" + d.name)
                 .style("stroke", "white")
+                .style("stroke-width", 1)
     }
 
     function mouseoutLegend2(d, index) {
@@ -345,6 +348,7 @@ function fill_with_data(year) {
 
             svg.selectAll("#feature" + d.properties.name)
                 .style("stroke", "white")
+                .style("stroke-width", 1)
     }
 
     function ready(error, gdp, exp, hiv) {
