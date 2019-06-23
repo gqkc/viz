@@ -4,6 +4,8 @@ var formatDate = d3.timeFormat("%b %Y");
 var startDate = new Date("1990"),
     endDate = new Date("2011");
 
+
+
 var margin = {
         top: 0,
         right: 50,
@@ -97,6 +99,37 @@ var svg = d3.select("#divforbubble").append("svg")
     .attr("transform",
         "translate(" + margin.left + ",50)");
 
+var colours = d3.scaleOrdinal(d3.schemeCategory10)
+.domain(["America", "Sub-Saharan Africa", "Europe & Central Asia", "Middle East & North Africa","South Asia","East Asia & Pacific"]);
+
+
+var legend = svg.selectAll(".legend")
+                .data(["America", "Sub-Saharan Africa", "Europe & Central Asia", "Middle East & North Africa","South Asia","East Asia & Pacific"] )
+                .enter().append("g")
+                .attr("class", "legend")
+                .attr("transform", function(d, i) {
+                    return "translate(0," + i * 20 + ")";
+                });
+
+            legend.append("rect")
+                .attr("x", 100)
+                .attr("y", 329)
+                .attr("width", 18)
+                .attr("height", 18)
+                .style("stroke", "black")
+                .style("fill", colours);
+
+
+            legend.append("text")
+                .attr("x", 125)
+                .attr("y", 340)
+                .attr("dy", ".35em")
+                .text(function(d) {
+                    return d;
+                })
+
+
+
 // Add X axis
 var x = d3.scaleLinear()
     .domain([40, 85])
@@ -108,7 +141,7 @@ svg.append("g")
 
 // Add Y axis
 var y = d3.scaleLinear()
-    .domain([150, 10000])
+    .domain([0, 50000])
     .range([300, 0]);
 
 var z = d3.scaleLinear()
@@ -120,7 +153,7 @@ var colorScale = d3.scaleSequential()
 // text label for the y axis
 svg.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
+    .attr("y", 0 - margin.left-3)
     .attr("x", 0 - 150)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
@@ -221,8 +254,6 @@ function fill_with_data(year) {
         .await(ready);
 
     //data_hiv.
-    var colours = d3.scaleOrdinal(d3.schemeCategory10)
-	.domain(["America", "Sub-Saharan Africa", "Europe & Central Asia", "Middle East & North Africa","South Asia","East Asia & Pacific"]);
 
     // The svg
     var svg_map = d3.select("#my_dataviz2")
