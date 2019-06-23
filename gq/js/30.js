@@ -350,7 +350,7 @@ function fill_with_data(year) {
 
             )
             .style("left", x(data_exp.get(i))+700 + "px")
-            .style("top", y(data_gdp.get(i))+180 + "px")
+            .style("top", y(data_gdp.get(i))+210 + "px")
 
 
     }
