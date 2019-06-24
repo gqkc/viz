@@ -316,7 +316,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
     function mouseoverLegend(d, index) {
         // console.log(d)
         id = data2.get(d["name"])
-        console.log(d.name)
+        // console.log(d.name)
         //console.log(datum["name"])
         // console.log(svg)
         //console.log(data2.get(id))
@@ -383,7 +383,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
     function mouseoutLegend(d, index) {
 
         id = data2.get(d["name"])
-        console.log(id)
+        // console.log(id)
         svg_map.selectAll("#feature" + id)
             .style('fill', colorScale(data.get(d["name"])));
 
@@ -398,8 +398,9 @@ function fill_with_data(k0, k1, k2, k3, year) {
     function mouseoutLegend2(d, index) {
 
         id = d.id
+        console.log(d)
         svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale(data.get(d["name"])));
+            .style('fill', colorScale(data.get(d.properties.name)||0));
 
         Tooltip
             .style("opacity", 0)
@@ -422,10 +423,10 @@ function fill_with_data(k0, k1, k2, k3, year) {
  // console.log(d3.extent(d3.values(data_exp)))
         x = d3.scaleLinear()
             .domain(d3.extent(d3.values(data_exp)))
-            .range([0, 500]);
+            .range([0, 500]).nice();
         y = d3.scaleLinear()
             .domain(d3.extent(d3.values(data_gdp)))
-            .range([300, 0]);
+            .range([300, 0]).nice();
         z = d3.scaleLinear()
             .domain(d3.extent(d3.values(data_hiv)))
             .range([2, 10]);
@@ -451,7 +452,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
             })
             .attr("cy", function(d) {
                 if (data_gdp.get(d['name']) != undefined) {
-                    //console.log(y(data_gdp.get(d['name'])))
+                    console.log(y(data_gdp.get(d['name'])))
                     return y(data_gdp.get(d['name']));
 
                 }
@@ -538,7 +539,6 @@ function fill_with_data(k0, k1, k2, k3, year) {
      //console.log(topo)
      colorScale = d3.scaleSequential(d3.interpolateReds)
          .domain(d3.extent(d3.values(data)));
-console.log(d3.extent(d3.values(data)))
         for (var feat in topo.features) {
 
             //console.log(topo.features[feat].properties.name)
