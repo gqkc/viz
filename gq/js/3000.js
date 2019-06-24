@@ -1,29 +1,35 @@
 var formatDateIntoYear = d3.timeFormat("%Y");
 var formatDate = d3.timeFormat("%b %Y");
 
-var startDate = new Date("1990"),
+var startDate = new Date("1960"),
     endDate = new Date("2011");
 
 var xValue = $('#xAxis').val();
 var yValue = $('#yAxis').val();
 var rValue = $('#rAxis').val();
+var mapValue = $('#map').val();
+
 
 var currentValue = 0;
 
 $('#xAxis').on('change', function() {
                 xValue = $('#xAxis').val();
                 console.log(xValue)
-                fill_with_data(rValue, xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+                fill_with_data(rValue, xValue, yValue, mapValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
             });
 
 $('#yAxis').on('change', function() {
     yValue = $('#yAxis').val();
-    fill_with_data(rValue, xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+    fill_with_data(rValue, xValue, yValue, mapValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
 });
 
 $('#rAxis').on('change', function() {
     rValue = $('#rAxis').val();
-    fill_with_data(rValue, xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+    fill_with_data(rValue, xValue, yValue, mapValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+});
+$('#map').on('change', function() {
+    mapValue = $('#map').val();
+    fill_with_data(rValue, xValue, yValue, mapValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
 });
 
 var margin = {
@@ -68,7 +74,7 @@ var label = slider.append("text")
     .attr("transform", "translate(0," + (-25) + ")")
 
 function hue(h) {
-    fill_with_data(rValue, xValue, yValue, formatDateIntoYear(h))
+    fill_with_data(rValue, xValue, yValue, mapValue, formatDateIntoYear(h))
     // console.log(formatDateIntoYear(h))
     handle.attr("cx", x_time_scale(h));
     label
@@ -163,8 +169,7 @@ var y = d3.scaleLinear()
 var z = d3.scaleLinear()
     .domain([0, 1])
     .range([2, 3]);
-var colorScale = d3.scaleSequential()
-    .domain([-1, 4]).interpolator(d3.interpolateReds);
+var colorScale;
 
 
 svg.append("g")
@@ -225,7 +230,7 @@ function step() {
   }
 }
 
-function fill_with_data(k0, k1, k2, year) {
+function fill_with_data(k0, k1, k2, k3, year) {
   // d3.selectAll("circle").remove()
 
 
@@ -265,7 +270,7 @@ function fill_with_data(k0, k1, k2, year) {
             data_hiv.set(d.name, +d[year]);
             return d
         })
-        .defer(d3.csv, "../data/population_growth_annual_percent.csv", function(d) {
+        .defer(d3.csv, "../data/"+k3+".csv", function(d) {
             //console.log(d["2010"])
             data_growth.set(d.name, +d[year]);
             return d
@@ -295,14 +300,11 @@ function fill_with_data(k0, k1, k2, year) {
     var data2 = d3.map();
     var data_continent = d3.map();
 
-    var colorScale2 = d3.scaleThreshold()
-        .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-        .range(d3.schemeBlues[7]);
 
     // Load external data and boot
     d3.queue()
         .defer(d3.json, "../data/world.geojson")
-        .defer(d3.csv, "../data/population_total.csv",
+        .defer(d3.csv, "../data/"+k3+".csv",
             function(d) {
                 data.set(d.name, +d[year]);
             })
@@ -382,7 +384,7 @@ function fill_with_data(k0, k1, k2, year) {
 
         id = data2.get(d["name"])
         svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale2(data.get(d["name"])));
+            .style('fill', colorScale(data.get(d["name"])));
 
         Tooltip
             .style("opacity", 0)
@@ -396,7 +398,7 @@ function fill_with_data(k0, k1, k2, year) {
 
         id = d.id
         svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale2(data.get(d["name"])));
+            .style('fill', colorScale(data.get(d["name"])));
 
         Tooltip
             .style("opacity", 0)
@@ -415,7 +417,8 @@ function fill_with_data(k0, k1, k2, year) {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-*/              console.log(d3.extent(d3.values(data_exp)))
+*/
+ // console.log(d3.extent(d3.values(data_exp)))
         x = d3.scaleLinear()
             .domain(d3.extent(d3.values(data_exp)))
             .range([0, 500]);
@@ -425,6 +428,7 @@ function fill_with_data(k0, k1, k2, year) {
         z = d3.scaleLinear()
             .domain(d3.extent(d3.values(data_hiv)))
             .range([2, 10]);
+
         svg.select("#axe_x")
             .transition()
             .call(d3.axisBottom(x))
@@ -439,6 +443,7 @@ function fill_with_data(k0, k1, k2, year) {
             .data(gdp)
             .enter()
             .append("circle")
+            .attr("id","bubble")
             .attr("cx", function(d) {
                 if (data_exp.get(d['name']) != undefined)
                     return x(data_exp.get(d['name']));
@@ -481,7 +486,7 @@ function fill_with_data(k0, k1, k2, year) {
     if (first == false){
       svg.selectAll("circle")
           .transition()
-          .duration(20)
+          .duration(5)
           .attr("cx", function(d) {
               if (data_exp.get(d['name']) != undefined)
                   return x(data_exp.get(d['name']));
@@ -530,6 +535,9 @@ function fill_with_data(k0, k1, k2, year) {
     function ready2(error, topo, tes) {
 
      //console.log(topo)
+     colorScale = d3.scaleSequential(d3.interpolateReds)
+         .domain(d3.extent(d3.values(data)));
+console.log(d3.extent(d3.values(data)))
         for (var feat in topo.features) {
 
             //console.log(topo.features[feat].properties.name)
@@ -553,7 +561,8 @@ function fill_with_data(k0, k1, k2, year) {
             .attr("fill", function(d) {
                 // console.log(data_continent)
                 d.total = data.get(d.properties.name) || 0;
-                return colorScale2(d.total);
+                // console.log(d3.extent(d3.values(data)))
+                return colorScale(d.total);
             })
             .on('mouseover', mouseoverLegend2)
             .on("mousemove", mousemoveLegend2)
