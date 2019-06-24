@@ -9,7 +9,22 @@ var yValue = $('#yAxis').val();
 var rValue = $('#rAxis').val();
 var mapValue = $('#map').val();
 
+var xmin
+var xmax
+var ymin
+var ymax
 
+$('#xmax').on('change', function() {
+                xmin = $('#xmin').val();
+                xmax = $('#xmax').val();
+                fill_with_data(rValue, xValue, yValue, mapValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+            });
+$('#ymax').on('change', function() {
+                ymin = $('#ymin').val();
+                ymax = $('#ymax').val();
+                fill_with_data(rValue, xValue, yValue, mapValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+            });
+console.log(xmin)
 var currentValue = 0;
 
 $('#xAxis').on('change', function() {
@@ -421,12 +436,21 @@ function fill_with_data(k0, k1, k2, k3, year) {
         .append("g")
 */
  // console.log(d3.extent(d3.values(data_exp)))
+        if (xmin != undefined){
+          x = d3.scaleLinear()
+            .domain([xmin, xmax])
+            .range([0, 500]).nice();}
+        else {
         x = d3.scaleLinear()
             .domain(d3.extent(d3.values(data_exp)))
-            .range([0, 500]).nice();
-        y = d3.scaleLinear()
-            .domain(d3.extent(d3.values(data_gdp)))
-            .range([300, 0]).nice();
+            .range([0, 500]).nice();}
+        if (ymin != undefined){
+          y = d3.scaleLinear()
+            .domain([ymin, ymax])
+            .range([300, 0]).nice();}
+        else {y = d3.scaleLinear()
+          .domain(d3.extent(d3.values(data_gdp)))
+          .range([300, 0]).nice();}
         z = d3.scaleLinear()
             .domain(d3.extent(d3.values(data_hiv)))
             .range([2, 10]);
