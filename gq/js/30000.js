@@ -371,7 +371,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
             .html("Country: " + d["name"] +
                 "<br> "+xValue+": " + data_x.get(d["name"]) +
                 "<br> "+yValue+": " + data_y.get(d["name"]) +
-                "<br> "+rValue+": " + data_x.get(d["name"])
+                "<br> "+rValue+": " + data_r.get(d["name"])
 
             )
             .style("left", (d3.mouse(this)[0] + width-100) + "px")
@@ -384,9 +384,9 @@ function fill_with_data(k0, k1, k2, k3, year) {
       var i = d.properties.name
         Tooltip
             .html("Country: " + i +
-                "<br> "+xValue+": " + data_r.get(i) +
+                "<br> "+xValue+": " + data_x.get(i) +
                 "<br> "+yValue+": " + data_y.get(i) +
-                "<br> "+ rValue+ ": " + data_x.get(i)
+                "<br> "+ rValue+ ": " + data_r.get(i)
 
             )
             .style("left", x(data_x.get(i))+700 + "px")
