@@ -4,7 +4,20 @@ var formatDate = d3.timeFormat("%b %Y");
 var startDate = new Date("1990"),
     endDate = new Date("2011");
 
+var xValue = $('#xAxis').val();
+var yValue = $('#yAxis').val();
+var currentValue = 0;
 
+$('#xAxis').on('change', function() {
+                xValue = $('#xAxis').val();
+                console.log(xValue)
+                fill_with_data(xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+            });
+
+$('#yAxis').on('change', function() {
+    yValue = $('#yAxis').val();
+    fill_with_data(xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+});
 
 var margin = {
         top: 0,
@@ -21,7 +34,6 @@ var margin = {
 
 var playButton = d3.select("#play-button");
 var moving = false;
-var currentValue = 0;
 var targetValue = width_slider;
 
 var svg11 = d3.select("#slider")
@@ -49,7 +61,7 @@ var label = slider.append("text")
     .attr("transform", "translate(0," + (-25) + ")")
 
 function hue(h) {
-    fill_with_data(formatDateIntoYear(h))
+    fill_with_data(xValue, yValue, formatDateIntoYear(h))
     // console.log(formatDateIntoYear(h))
     handle.attr("cx", x_time_scale(h));
     label
@@ -129,17 +141,17 @@ var legend = svg.selectAll(".legend")
                 })
 
 
-
 // Add X axis
-var x = d3.scaleLinear()
-    .domain([40, 85])
-    .range([0, 500]);
+
 
 svg.append("g")
     .attr("transform", "translate(0," +305 + ")")
     .call(d3.axisBottom(x));
 
 // Add Y axis
+var x = d3.scaleLinear()
+    .domain([40, 85])
+    .range([0, 500]);
 var y = d3.scaleLinear()
     .domain([0, 50000])
     .range([300, 0]);
@@ -152,19 +164,21 @@ var colorScale = d3.scaleSequential()
 
 // text label for the y axis
 svg.append("text")
+    .attr("id","idy")
     .attr("transform", "rotate(-90)")
     .attr("y", 0 - margin.left-3)
     .attr("x", 0 - 150)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .text("GDP / Capita");
+    .text(yValue);
 
 svg.append("text")
+    .attr("id","idx")
     .attr("y", 330)
     .attr("x", "50%")
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .text("Life expectancy");
+    .text(xValue);
 
 svg.append("g")
     // .attr("transform", "translate("+width+",0)")
@@ -202,8 +216,9 @@ function step() {
   }
 }
 
-function fill_with_data(year) {
+function fill_with_data(k1, k2, year) {
   // d3.selectAll("circle").remove()
+
 
   playButton
     .on("click", function() {
@@ -226,13 +241,13 @@ function fill_with_data(year) {
 
     // Load external data and boot
     d3.queue()
-        .defer(d3.csv, "../data/gdp.csv", function(d) {
-            //console.log(d)
+        .defer(d3.csv, "../data/"+k2+".csv", function(d) {
+            // console.log(k2)
             data_gdp.set(d.name, +d[year]);
             return d
         })
-        .defer(d3.csv, "../data/lifeexpectancy.csv", function(d) {
-            //console.log(d)
+        .defer(d3.csv, "../data/"+k1+".csv", function(d) {
+            // console.log(k1)
             data_exp.set(d.name, +d[year]);
             return d
         })
@@ -252,9 +267,14 @@ function fill_with_data(year) {
                 data_continent.set(d.name, d["group"]);
             })
         .await(ready);
-
+        console.log(data_gdp)
     //data_hiv.
-
+    x = d3.scaleLinear()
+        .domain([0, d3.max(data_gdp, function(d) { return d.column1; })])
+        .range([0, 500]);
+    y = d3.scaleLinear()
+        .domain([0, d3.max(data_exp, function(d) { console.log(d);return d.column1; })])
+        .range([300, 0]);
     // The svg
     var svg_map = d3.select("#my_dataviz2")
     .attr("transform", "translate(-150,0)")
@@ -480,6 +500,11 @@ function fill_with_data(year) {
           // .on('mouseover', mouseoverLegend)
           // .on("mousemove", mousemoveLegend)
           // .on('mouseout', mouseoutLegend)
+          svg.selectAll("#idy")
+              .text(yValue);
+
+          svg.selectAll("#idx")
+              .text(xValue);
   }}
 
 
