@@ -6,17 +6,24 @@ var startDate = new Date("1990"),
 
 var xValue = $('#xAxis').val();
 var yValue = $('#yAxis').val();
+var rValue = $('#rAxis').val();
+
 var currentValue = 0;
 
 $('#xAxis').on('change', function() {
                 xValue = $('#xAxis').val();
                 console.log(xValue)
-                fill_with_data(xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+                fill_with_data(rValue, xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
             });
 
 $('#yAxis').on('change', function() {
     yValue = $('#yAxis').val();
-    fill_with_data(xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+    fill_with_data(rValue, xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
+});
+
+$('#rAxis').on('change', function() {
+    rValue = $('#rAxis').val();
+    fill_with_data(rValue, xValue, yValue, formatDateIntoYear(x_time_scale.invert(currentValue)));
 });
 
 var margin = {
@@ -61,7 +68,7 @@ var label = slider.append("text")
     .attr("transform", "translate(0," + (-25) + ")")
 
 function hue(h) {
-    fill_with_data(xValue, yValue, formatDateIntoYear(h))
+    fill_with_data(rValue, xValue, yValue, formatDateIntoYear(h))
     // console.log(formatDateIntoYear(h))
     handle.attr("cx", x_time_scale(h));
     label
@@ -218,7 +225,7 @@ function step() {
   }
 }
 
-function fill_with_data(k1, k2, year) {
+function fill_with_data(k0, k1, k2, year) {
   // d3.selectAll("circle").remove()
 
 
@@ -253,7 +260,7 @@ function fill_with_data(k1, k2, year) {
             data_exp.set(d.name, +d[year]);
             return d
         })
-        .defer(d3.csv, "../data/adults_with_hiv_percent_age_15_49.csv", function(d) {
+        .defer(d3.csv, "../data/"+k0+".csv", function(d) {
             //console.log(d["1991"])
             data_hiv.set(d.name, +d[year]);
             return d
@@ -415,6 +422,9 @@ function fill_with_data(k1, k2, year) {
         y = d3.scaleLinear()
             .domain(d3.extent(d3.values(data_gdp)))
             .range([300, 0]);
+        z = d3.scaleLinear()
+            .domain(d3.extent(d3.values(data_hiv)))
+            .range([2, 10]);
         svg.select("#axe_x")
             .transition()
             .call(d3.axisBottom(x))
