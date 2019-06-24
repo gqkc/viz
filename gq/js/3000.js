@@ -383,6 +383,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
     function mouseoutLegend(d, index) {
 
         id = data2.get(d["name"])
+        console.log(id)
         svg_map.selectAll("#feature" + id)
             .style('fill', colorScale(data.get(d["name"])));
 
