@@ -13,7 +13,11 @@ var xmin
 var xmax
 var ymin
 var ymax
+var countries_clicked=[]
 
+function remove(array, element) {
+  return array.filter(el => el !== element);
+}
 $('#xmax').on('change', function() {
                 xmin = $('#xmin').val();
                 xmax = $('#xmax').val();
@@ -326,15 +330,40 @@ function fill_with_data(k0, k1, k2, k3, year) {
         .await(ready2);
 
 
+    function mouseclick(d, index) {
+        id = data2.get(d["name"])
+        console.log(countries_clicked)
+
+        if (!countries_clicked.includes(d.name)){
+            countries_clicked.push(d.name)
+            svg.selectAll("#feature" + d.name)
+            .style("stroke", "black")
+            .style("stroke-width", 5)
+
+        svg_map.selectAll("#feature" + id)
+            .style('fill', '#cc6699');
+        }
+        else{
+            remove(countries_clicked,d.name);
+            svg.selectAll("#feature" + d.name)
+            .style("stroke", "white")
+            .style("stroke-width", 1)
+        svg_map.selectAll("#feature" + id)
+            .style('fill', '#cc6699');
+           svg_map.selectAll("#feature" + id)
+            .style('fill', colorScale(data.get(d["name"])));
+        }
+        // console.log(d)
+
+
+    }
 
 
     function mouseoverLegend(d, index) {
+        //countries_clicked.push(index)
+        //console.log(countries_clicked)
         // console.log(d)
         id = data2.get(d["name"])
-        // console.log(d.name)
-        //console.log(datum["name"])
-        // console.log(svg)
-        //console.log(data2.get(id))
         svg.selectAll("#feature" + d.name)
             .style("stroke", "black")
             .style("stroke-width", 5)
@@ -347,14 +376,8 @@ function fill_with_data(k0, k1, k2, k3, year) {
     }
 
     function mouseoverLegend2(d, index) {
-        // console.log(d.id)
-        // id = data2.get(d["id"])
         id = d.id
-        // console.log(d.properties.name)
-        //console.log(datum["name"])
-        // console.log(id)
-        //console.log(data2.get(id))
-        // console.log(d)
+
         svg_map.selectAll("#feature" + id)
             .style('fill', '#cc6699');
         svg.selectAll("#feature" + d.properties.name)
@@ -371,9 +394,9 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
         Tooltip
             .html("Country: " + d["name"] +
-                "<br> "+rValue+": " + data_r.get(d["name"]) +
-                "<br> "+yValue+": " + (data_y.get(d["name"]) ).toFixed(2)+
-                "<br> "+xValue+": " + data_x.get(d["name"])
+                "<br> "+rValue+": " + (data_r.get(d["name"])).toFixed(0) +
+                "<br> "+yValue+": " + (data_y.get(d["name"]) ).toFixed(0)+
+                "<br> "+xValue+": " + (data_x.get(d["name"])).toFixed(0)
 
             )
             .style("left", (d3.mouse(this)[0] + width-100) + "px")
@@ -386,9 +409,9 @@ function fill_with_data(k0, k1, k2, k3, year) {
       var i = d.properties.name
         Tooltip
             .html("Country: " + i +
-                "<br> "+rValue+": " + data_r.get(i) +
-                "<br> "+yValue+": " + data_y.get(i) +
-                "<br> "+xValue+": " + data_x.get(i)
+                "<br> "+rValue+": " + (data_r.get(i)).toFixed(0) +
+                "<br> "+yValue+": " + (data_y.get(i)).toFixed(0) +
+                "<br> "+xValue+": " + (data_x.get(i)).toFixed(0)
 
             )
             .style("left", x(data_x.get(i))+700 + "px")
@@ -401,15 +424,18 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
         id = data2.get(d["name"])
         // console.log(id)
-        svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale(data.get(d["name"])));
+
 
         Tooltip
             .style("opacity", 0)
-
+        if (!countries_clicked.includes(d.name)){
             svg.selectAll("#feature" + d.name)
                 .style("stroke", "white")
                 .style("stroke-width", 1)
+
+         svg_map.selectAll("#feature" + id)
+            .style('fill', colorScale(data.get(d["name"])));
+                }
     }
 
     function mouseoutLegend2(d, index) {
@@ -504,10 +530,23 @@ function fill_with_data(k0, k1, k2, k3, year) {
                 return colours(data_continent.get(d['name']))
                 //return 20
             })
-            .style("stroke", "white")
+            .style("stroke", function(d){
+            if (countries_clicked.includes(data2.get(d.name))){
+                return "black"
+            }
+            else return "white"
+            })
+            .style("stroke-width", function(d){
+
+            if (countries_clicked.includes(d.name)){
+                return 5
+            }
+            else return 1
+            })
             .on('mouseover', mouseoverLegend)
             .on("mousemove", mousemoveLegend)
-            .on('mouseout', mouseoutLegend)
+            .on("click", mouseclick)
+            //.on('mouseout', mouseoutLegend)
 
     first = false
     }
@@ -547,10 +586,26 @@ function fill_with_data(k0, k1, k2, k3, year) {
               else return colours(data_continent.get(d['name']))
               //return 20
           })
+            .style("stroke", function(d){
+            if (countries_clicked.includes(d.name)){
+                return "black"
+            }
+            else return "white"
+            })
+            .style("stroke-width", function(d){
+
+            if (countries_clicked.includes(d.name)){
+                return 5
+            }
+            else return 1
+            })
+
 
            svg.selectAll("circle").style("stroke", "white")
-           .on('mouseover', mouseoverLegend)
+           .on('click', mouseoverLegend)
            .on("mousemove", mousemoveLegend)
+           .on("click", mouseclick)
+
            .on('mouseout', mouseoutLegend)
           svg.selectAll("#idy")
               .text(yValue);
@@ -587,6 +642,9 @@ function fill_with_data(k0, k1, k2, k3, year) {
             })
             // set the color of each country
             .attr("fill", function(d) {
+                if (countries_clicked.includes(d.properties.name)){
+                    return "#cc6699"
+                }
                 // console.log(data_continent)
                 d.total = data.get(d.properties.name) || 0;
                 // console.log(d3.extent(d3.values(data)))
