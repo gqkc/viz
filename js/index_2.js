@@ -346,7 +346,9 @@ function fill_with_data(k0, k1, k2, k3, year) {
         if (!countries_clicked.includes(name_country)){
             countries_clicked.push(name_country)
             svg.selectAll("#feature" + name_country)
-            .style("stroke", "black")
+            .style("fill", "white")
+            .style("stroke", "red")
+
             .style("stroke-width", 5)
 
         svg_map.selectAll("#feature" + id)
@@ -549,7 +551,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
             })
             .style("stroke", function(d){
             if (countries_clicked.includes(data2.get(d.name))){
-                return "black"
+                return "red"
             }
             else return "white"
             })
@@ -605,7 +607,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
           })
             .style("stroke", function(d){
             if (countries_clicked.includes(d.name)){
-                return "black"
+                return "red"
             }
             else return "white"
             })
