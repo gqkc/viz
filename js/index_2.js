@@ -344,9 +344,17 @@ function fill_with_data(k0, k1, k2, k3, year) {
         console.log(countries_clicked)
 
         if (!countries_clicked.includes(name_country)){
+
+            svg.selectAll("circle").style("opacity", 0.7)
+
             countries_clicked.push(name_country)
+            for (var country_clicked in countries_clicked){
+            //console.log("feature"+countries_clicked[country_clicked])
+                svg.selectAll("#feature" + countries_clicked[country_clicked]).style("opacity",1)
+
+            }
             svg.selectAll("#feature" + name_country)
-            .style("fill", "white")
+            //.style("fill", "white")
             .style("stroke", "red")
 
             .style("stroke-width", 5)
@@ -355,14 +363,20 @@ function fill_with_data(k0, k1, k2, k3, year) {
             .style('fill', 'black');
         }
         else{
+
+
+
             countries_clicked=remove(countries_clicked,name_country);
             svg.selectAll("#feature" + name_country)
             .style("stroke", "white")
             .style("stroke-width", 1)
-        svg_map.selectAll("#feature" + id)
+            svg_map.selectAll("#feature" + id)
             .style('fill', '#cc6699');
            svg_map.selectAll("#feature" + id)
             .style('fill', colorScale(data.get(name_country)));
+            }
+        if (countries_clicked.length==0){
+                svg.selectAll("circle").style("opacity", 1)
         }
         // console.log(d)
 
@@ -375,7 +389,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
         // console.log(d)
         id = data2.get(d["name"])
         svg.selectAll("#feature" + d.name)
-            .style("stroke", "black")
+            .style("stroke", "red")
             .style("stroke-width", 5)
 
         svg_map.selectAll("#feature" + id)
@@ -391,7 +405,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
         svg_map.selectAll("#feature" + id)
             .style('fill', '#cc6699');
         svg.selectAll("#feature" + d.properties.name)
-            .style("stroke", "black")
+            .style("stroke", "red")
             .style("stroke-width", 5)
         Tooltip
             .style("opacity", 1)
@@ -454,6 +468,19 @@ function fill_with_data(k0, k1, k2, k3, year) {
                 .style('fill', colorScale(data.get(name_country)||0));
 
                 }
+         else{
+
+
+               svg.selectAll("#feature" + name_country)
+                .style("stroke", "red")
+                .style("stroke-width", 5)
+                .style("opacity", 1)
+
+
+             svg_map.selectAll("#feature" + id)
+            .style('fill', "black");
+
+         }
     }
 /*
     function mouseoutLegend2(d, index) {
