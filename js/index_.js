@@ -405,6 +405,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
                 "<br> "+xValue+": " + (data_x.get(d["name"])).toFixed(4)
 
             )
+            .style("z-index",100)
             .style("left", (d3.mouse(this)[0] + width-100) + "px")
             .style("top", (d3.mouse(this)[1] +50) + "px")
 
