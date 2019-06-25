@@ -406,7 +406,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
             )
             .style("left", (d3.mouse(this)[0] + width-100) + "px")
-            .style("top", (d3.mouse(this)[1] + 200) + "px")
+            .style("top", (d3.mouse(this)[1] +50) + "px")
 
 
     }
@@ -422,7 +422,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
             )
             .style("left", x(data_x.get(i))+700 + "px")
-            .style("top", y(data_y.get(i))+180 + "px")
+            .style("top", y(data_y.get(i))+50 + "px")
 
     }
     }
