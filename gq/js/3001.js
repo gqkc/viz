@@ -331,12 +331,19 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
 
     function mouseclick(d, index) {
-        id = data2.get(d["name"])
+    if (d["properties"]== undefined){
+    name_country=d.name
+        }
+        else{
+        name_country=d.properties.name
+        }
+        id = data2.get(name_country)
+
         console.log(countries_clicked)
 
-        if (!countries_clicked.includes(d.name)){
-            countries_clicked.push(d.name)
-            svg.selectAll("#feature" + d.name)
+        if (!countries_clicked.includes(name_country)){
+            countries_clicked.push(name_country)
+            svg.selectAll("#feature" + name_country)
             .style("stroke", "black")
             .style("stroke-width", 5)
 
@@ -344,20 +351,19 @@ function fill_with_data(k0, k1, k2, k3, year) {
             .style('fill', '#cc6699');
         }
         else{
-            remove(countries_clicked,d.name);
-            svg.selectAll("#feature" + d.name)
+            remove(countries_clicked,name_country);
+            svg.selectAll("#feature" + name_country)
             .style("stroke", "white")
             .style("stroke-width", 1)
         svg_map.selectAll("#feature" + id)
             .style('fill', '#cc6699');
            svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale(data.get(d["name"])));
+            .style('fill', colorScale(data.get(name_country)));
         }
         // console.log(d)
 
 
     }
-
 
     function mouseoverLegend(d, index) {
         //countries_clicked.push(index)
@@ -421,23 +427,28 @@ function fill_with_data(k0, k1, k2, k3, year) {
     }
 
     function mouseoutLegend(d, index) {
-
-        id = data2.get(d["name"])
+        if (d["properties"]== undefined){
+            name_country=d.name
+        }
+        else{
+        name_country=d.properties.name
+        }
+        id = data2.get(name_country)
         // console.log(id)
 
 
         Tooltip
             .style("opacity", 0)
-        if (!countries_clicked.includes(d.name)){
-            svg.selectAll("#feature" + d.name)
+        if (!countries_clicked.includes(name_country)){
+            svg.selectAll("#feature" + name_country)
                 .style("stroke", "white")
                 .style("stroke-width", 1)
 
          svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale(data.get(d["name"])));
+            .style('fill', colorScale(data.get(name_country)));
                 }
     }
-
+/*
     function mouseoutLegend2(d, index) {
 
         id = d.id
@@ -452,7 +463,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
                 .style("stroke", "white")
                 .style("stroke-width", 1)
     }
-
+*/
     function ready(error, gdp, exp, hiv) {
         // Add dots
         // console.log("hiv",data_r)
@@ -652,7 +663,8 @@ function fill_with_data(k0, k1, k2, k3, year) {
             })
             .on('mouseover', mouseoverLegend2)
             .on("mousemove", mousemoveLegend2)
-            .on('mouseout', mouseoutLegend2);
+            .on('mouseout', mouseoutLegend)
+            .on('click', mouseclick)
 
     }
 
