@@ -331,11 +331,11 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
 
     function mouseclick(d, index) {
-    if (d["properties"]== undefined){
-    name_country=d.name
+        if (d["properties"]== undefined){
+            name_country=d.name
         }
         else{
-        name_country=d.properties.name
+            name_country=d.properties.name
         }
         id = data2.get(name_country)
 
@@ -413,6 +413,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
     function mousemoveLegend2(d, index) {
       var i = d.properties.name
+      if (data_r.get(i) != undefined){
         Tooltip
             .html("Country: " + i +
                 "<br> "+rValue+": " + (data_r.get(i)).toFixed(0) +
@@ -423,7 +424,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
             .style("left", x(data_x.get(i))+700 + "px")
             .style("top", y(data_y.get(i))+180 + "px")
 
-
+    }
     }
 
     function mouseoutLegend(d, index) {
@@ -443,9 +444,10 @@ function fill_with_data(k0, k1, k2, k3, year) {
             svg.selectAll("#feature" + name_country)
                 .style("stroke", "white")
                 .style("stroke-width", 1)
+            //if (data.get(name_country)!= undefined){
+                svg_map.selectAll("#feature" + id)
+                .style('fill', colorScale(data.get(name_country)||0));
 
-         svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale(data.get(name_country)));
                 }
     }
 /*
