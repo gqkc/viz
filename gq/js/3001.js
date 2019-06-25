@@ -351,7 +351,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
             .style('fill', '#cc6699');
         }
         else{
-            remove(countries_clicked,name_country);
+            countries_clicked=remove(countries_clicked,name_country);
             svg.selectAll("#feature" + name_country)
             .style("stroke", "white")
             .style("stroke-width", 1)
@@ -437,7 +437,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
         id = data2.get(name_country)
         // console.log(id)
 
-
+        console.log(countries_clicked)
         Tooltip
             .style("opacity", 0)
         if (!countries_clicked.includes(name_country)){
