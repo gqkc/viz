@@ -327,7 +327,12 @@ function fill_with_data(k0, k1, k2, k3, year) {
         .defer(d3.json, "../data/world.geojson")
         .defer(d3.csv, "../data/"+k3+".csv",
             function(d) {
+            if (mapValue=="continent"){
+                data.set(d.name, d["group"]);
+            }
+            else{
                 data.set(d.name, +d[year]);
+                }
             })
         .await(ready2);
 
@@ -464,8 +469,12 @@ function fill_with_data(k0, k1, k2, k3, year) {
                 .style("stroke", "white")
                 .style("stroke-width", 1)
             //if (data.get(name_country)!= undefined){
+            if (mapValue=="continent"){
+            scale_=colours
+            }
+            else{scale_=colorScale}
                 svg_map.selectAll("#feature" + id)
-                .style('fill', colorScale(data.get(name_country)||0));
+                .style('fill', scale_(data.get(name_country)||0));
 
                 }
          else{
@@ -688,13 +697,22 @@ function fill_with_data(k0, k1, k2, k3, year) {
             })
             // set the color of each country
             .attr("fill", function(d) {
+            if (mapValue=="continent"){
+                scale_=colours;
+                console.log("colours")
+            }
+            else{
+                scale_=colorScale
+            }
+
                 if (countries_clicked.includes(d.properties.name)){
                     return "#cc6699"
                 }
                 // console.log(data_continent)
                 d.total = data.get(d.properties.name) || 0;
+    console.log(d.total)
                 // console.log(d3.extent(d3.values(data)))
-                return colorScale(d.total);
+                return scale_(d.total);
             })
             .on('mouseover', mouseoverLegend2)
             .on("mousemove", mousemoveLegend2)
