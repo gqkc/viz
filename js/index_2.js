@@ -350,7 +350,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
         if (!countries_clicked.includes(name_country)){
 
-            svg.selectAll("circle").style("opacity", 0.7)
+            svg.selectAll("circle").style("opacity", 0.6)
 
             countries_clicked.push(name_country)
             for (var country_clicked in countries_clicked){
