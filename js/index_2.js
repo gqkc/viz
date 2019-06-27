@@ -18,6 +18,9 @@ var countries_clicked=[]
 function remove(array, element) {
   return array.filter(el => el !== element);
 }
+
+var svg_map = d3.select("#my_dataviz2")
+    .attr("transform", "translate(-150,0)")
 $('#xmax').on('change', function() {
                 xmin = $('#xmin').val();
                 xmax = $('#xmax').val();
@@ -305,8 +308,7 @@ function fill_with_data(k0, k1, k2, k3, year) {
     //data_r.
 
     // The svg
-    var svg_map = d3.select("#my_dataviz2")
-    .attr("transform", "translate(-150,0)")
+
 
 
     // Map and projection
@@ -365,7 +367,8 @@ function fill_with_data(k0, k1, k2, k3, year) {
             .style("stroke-width", 5)
 
         svg_map.selectAll("#feature" + id)
-            .style('fill', 'black');
+            .style('stroke', 'red')
+            .style('stroke-width',5)
         }
         else{
 
@@ -378,7 +381,9 @@ function fill_with_data(k0, k1, k2, k3, year) {
             svg_map.selectAll("#feature" + id)
             .style('fill', '#cc6699');
            svg_map.selectAll("#feature" + id)
-            .style('fill', colorScale(data.get(name_country)));
+            .style('fill', colorScale(data.get(name_country)))
+            .style('stroke', 'white')
+            .style('stroke-width',1)
             }
         if (countries_clicked.length==0){
                 svg.selectAll("circle").style("opacity", 1)
@@ -487,8 +492,8 @@ function fill_with_data(k0, k1, k2, k3, year) {
 
 
              svg_map.selectAll("#feature" + id)
-            .style('fill', "black");
-
+                .style("stroke", "red")
+                .style("stroke-width", 5)
          }
     }
 /*
