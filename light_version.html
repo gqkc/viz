@@ -1,0 +1,154 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+  <style>
+    body {
+      font-family:"avenir next", Arial, sans-serif;
+      font-size: 12px;
+      color: #696969;
+    }
+
+    #play-button {
+      position: absolute;
+      top: 70px;
+      left: 50px;
+      background: #f08080;
+      padding-right: 26px;
+      border-radius: 3px;
+      border: none;
+      color: white;
+      margin: 0;
+      padding: 0 12px;
+      width: 60px;
+      cursor: pointer;
+      height: 30px;
+    }
+
+    #play-button:hover {
+      background-color: #696969;
+    }
+
+    .ticks {
+      font-size: 10px;
+    }
+
+    .track,
+    .track-inset,
+    .track-overlay {
+      stroke-linecap: round;
+    }
+
+    .track {
+      stroke: #000;
+      stroke-opacity: 0.3;
+      stroke-width: 10px;
+    }
+
+    .track-inset {
+      stroke: #dcdcdc;
+      stroke-width: 8px;
+    }
+
+    .track-overlay {
+      pointer-events: stroke;
+      stroke-width: 50px;
+      stroke: transparent;
+      cursor: crosshair;
+    }
+
+    .handle {
+      fill: #fff;
+      stroke: #000;
+      stroke-opacity: 0.5;
+      stroke-width: 1.25px;
+    }
+  </style>
+
+<div id="slider" >
+  <button id="play-button">Play</button>
+</div>
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+<div id="slider"></div>
+<table>
+  <tr>
+    <td>
+      <div style="position:absolute; margin-left:250px">
+        <h1 align="center" >Worldwide map</h1>
+      </div>
+<div >
+
+<svg id="my_dataviz2" width="700" height="500" >
+</svg>
+</div>
+</td>
+<td>
+<div style="position:absolute;margin-left:100px;">
+  <h1 align="center" >Correlation between economy and health</h1>
+</div>
+<div id="divforbubble" width="200" height="500" >
+</div>
+
+<div>
+    <div id="container"></div>
+    <select id="xAxis" style="position:absolute;left:1000px;top:515px;">
+      <option value="population_total">Population</option>
+      <option value="gdp">GDP/capita</option>
+      <option value="hiv_death_rate">HIV death rate</option>
+      <option value="lifeexpectancy" selected>Life expectancy</option>
+    <option value="population_growth_annual_percent">Population growth %</option>
+    <option value="adults_with_hiv_percent_age_15_49">adults with HIV %</option>
+    </select>
+    <select id="yAxis" style="position:absolute;transform: rotate(-90deg);top:280px;left:600px;">
+      <option value="population_total">Population</option>
+      <option value="gdp" selected>GDP/capita</option>
+      <option value="hiv_death_rate">HIV death rate</option>
+      <option value="lifeexpectancy">Life expectancy</option>
+    <option value="population_growth_annual_percent">Population growth %</option>
+    <option value="adults_with_hiv_percent_age_15_49">adults with HIV %</option>
+    </select>
+    <select id="rAxis" style="position:absolute;left:1000px;top:585px;">
+      <option value="population_total">Population</option>
+      <option value="gdp">GDP/capita</option>
+      <option value="hiv_death_rate">HIV death rate</option>
+      <option value="lifeexpectancy">Life expectancy</option>
+      <option value="constant">constant</option>
+    <option value="population_growth_annual_percent">Population growth %</option>
+    <option value="adults_with_hiv_percent_age_15_49" select>adults with HIV %</option>
+    </select>
+
+    <select id="map" style="position:absolute;left:300px;top:585px;">
+      <option value="population_total">Population</option>
+      <option value="gdp">GDP/capita</option>
+      <option value="hiv_death_rate">HIV death rate</option>
+      <option value="lifeexpectancy">Life expectancy</option>
+    <option value="population_growth_annual_percent">Population growth %</option>
+    <option value="adults_with_hiv_percent_age_15_49" select>adults with HIV %</option>
+    </select>
+
+  </div>
+    </td>
+</tr>
+  </table>
+  <div style= "position:absolute;left:900px;top:85px;">
+    <label for="xmin">xmin</label>
+  <input type="text" id="xmin" name="name" required
+         minlength="4" maxlength="8" size="3">
+         <label for="xmax">xmax</label>
+   <input type="text" id="xmax" name="name" required
+          minlength="4" maxlength="8" size="3">
+    <label for="ymin">ymin</label>
+  <input type="text" id="ymin" name="name" required
+         minlength="4" maxlength="8" size="3">
+         <label for="ymax">ymax</label>
+   <input type="text" id="ymax" name="name" required
+          minlength="4" maxlength="8" size="3">
+
+ </div>
+<script src="js/index_.js">
+
+</script>
