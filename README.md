@@ -3,6 +3,7 @@
 The goal of this project is to emphasise the link between health and economy via d3 visualisation.
 
 It has been developed by Alexis Ipanema, Benoit Sarrauste, Guillaume Quispe. 
+Tested on Chrome (75.0.3770.100) only.
 
 Here are some screenshots.
 <img src="resources/index.png"></img>
